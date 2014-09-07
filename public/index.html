@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Player Wellness</title>
+
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0;">
+	<meta name="description" content="trinkaceci, matrimonio, trinchero, deconto, cecilia, andrea, torino, febbraio">
+
+	<link rel="stylesheet" type="text/css" href="styles/main.css"> -->
+
+	<!-- <script src="scripts/scripts.min.js"></script>
+	<script src="scripts/bower.min.js"></script> -->
+    <script src="http://code.jquery.com/jquery-latest.min.js"
+        type="text/javascript"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    // $.ajax({
+    //     url: 'http://127.0.0.1:5000',
+    //     // dataType: "jsonp",
+    //     type: 'GET',
+    //     dataType: 'json',
+    //     success: function(data) { console.log(data) }
+    // });
+    
+    $.get( '/helloworld', function(data) {
+       $('#results').html(data);
+       console.log(data);
+     });
+});
+</script>
+</head>
+<body>
+	<div id="results">ciao ceci</div>
+</body>
