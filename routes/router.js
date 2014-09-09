@@ -1,9 +1,9 @@
-var express = require('express'); 
-//var router = express.Router();
+var express = require('express');
 
 var routes = require('./modules/index');
 var users = require('./modules/users');
 var helloworld = require('./modules/helloworld');
+var AM = require('./modules/account-manager');
 
 module.exports = function(app) {
 	//var router = app.Router();
@@ -11,6 +11,40 @@ module.exports = function(app) {
 	// app.use('/users', users);
 	// app.use('/helloworld', helloworld);
 
+	app.get('/', function(req, res){
+	// check if the user's credentials are saved in a cookie //
+	// 	if (req.cookies.user == undefined || req.cookies.pass == undefined){
+	// 		res.render('login', { title: 'Hello - Please Login To Your Account' });
+	// 	}	else{
+	// // attempt automatic login //
+	// 		AM.autoLogin(req.cookies.user, req.cookies.pass, function(o){
+	// 			if (o != null){
+	// 			    req.session.user = o;
+	// 				res.redirect('/home');
+	// 			}	else{
+	// 				res.render('login', { title: 'Hello - Please Login To Your Account' });
+	// 			}
+	// 		});
+	// 	}
+
+		res.render('login', { title: 'Hello - Please Login To Your Account' });
+	});
+
+	app.post('/', function(req, res){
+		AM.manualLogin(req.param('user'), req.param('pass'), function(e, o){
+			if (!o){
+				res.send(e, 400);
+			}	else{
+			    req.session.user = o;
+				// if (req.param('remember-me') == 'true'){
+				// 	res.cookie('user', o.user, { maxAge: 900000 });
+				// 	res.cookie('pass', o.pass, { maxAge: 900000 });
+				// }
+				res.send(o, 200);
+			}
+		});
+	});
+	
 	app.get('/helloworld', function(req, res) {
 		helloworld.ciao(function(data) {
 			res.json(data);
@@ -210,11 +244,5 @@ module.exports = function(app) {
 // 	});
 	
 // 	app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });
-
-// // ceci //
-// 	router.get('/helloworld', function(req, res){
-// 		//helloworld.dammiNomi();
-// 		console.log("ciao");
-// 	});
 
 // };

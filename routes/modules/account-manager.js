@@ -1,4 +1,17 @@
+var nano = require('nano')('http://localhost:5984');
+var playerdb = nano.db.use('player-wellness');
 
+playerdb.get('user_list', { revs_info: true }, function(err, body) {
+	if (!err){
+	  	console.log(body);
+	  	var user_list = body;
+	  	// res.json(body);
+	  }
+	  else
+	  {
+	  	console.log(err);
+	  }
+});
 // var crypto 		= require('crypto');
 // var MongoDB 	= require('mongodb').Db;
 // var Server 		= require('mongodb').Server;
