@@ -1,9 +1,9 @@
 var express = require('express');
 
-var routes = require('./modules/index');
-var users = require('./modules/users');
-var helloworld = require('./modules/helloworld');
-var AM = require('./modules/account-manager');
+// var routes = require('./modules/index');
+// var users = require('./modules/users');
+var AL = require('./modules/login');
+// var AM = require('./modules/account-manager');
 
 module.exports = function(app) {
 	//var router = app.Router();
@@ -12,43 +12,83 @@ module.exports = function(app) {
 	// app.use('/helloworld', helloworld);
 
 	app.get('/', function(req, res){
-	// check if the user's credentials are saved in a cookie //
-	// 	if (req.cookies.user == undefined || req.cookies.pass == undefined){
-	// 		res.render('login', { title: 'Hello - Please Login To Your Account' });
-	// 	}	else{
-	// // attempt automatic login //
-	// 		AM.autoLogin(req.cookies.user, req.cookies.pass, function(o){
-	// 			if (o != null){
-	// 			    req.session.user = o;
-	// 				res.redirect('/home');
-	// 			}	else{
-	// 				res.render('login', { title: 'Hello - Please Login To Your Account' });
-	// 			}
-	// 		});
-	// 	}
+	//check if the user's credentials are saved in a cookie //
+		if (req.cookies.user == undefined || req.cookies.pass == undefined){
+			res.render('login', { title: 'Hello - Please Login To Your Account' });
+		}	
+		else
+		{
+	// attempt automatic login //
+			AL.login(req.cookies.user, req.cookies.pass, function(check){
+				if ( check === 'perfect' ){
+				    req.session.user = req.cookies.user;
+					res.redirect('/home');
+				}	else{
+					res.render('login', { title: 'Hello - Please Login To Your Account' });
+				}
+			});
+		}
 
-		res.render('login', { title: 'Hello - Please Login To Your Account' });
+		//res.render('login', { title: 'Hello - Please Login To Your Account' }).end();
 	});
 
 	app.post('/', function(req, res){
-		AM.manualLogin(req.param('user'), req.param('pass'), function(e, o){
-			if (!o){
-				res.send(e, 400);
-			}	else{
-			    req.session.user = o;
-				// if (req.param('remember-me') == 'true'){
-				// 	res.cookie('user', o.user, { maxAge: 900000 });
-				// 	res.cookie('pass', o.pass, { maxAge: 900000 });
-				// }
-				res.send(o, 200);
+		AL.login(req.body.user, req.body.pass, function(check){
+			if ( check === 'perfect' )
+			{
+				console.log('login effettuato');
+				console.log(req.body);
+				//res.send(200).end();
+				req.session.user = req.body.user;
+				//res.render('home', { title: 'Hello - Please Login To Your Account' });
+				if (req.body.remember == 'on'){
+					console.log('cookie salvato');
+					res.cookie('user', req.body.user, { maxAge: 365 * 24 * 60 * 60 * 1000 });
+					res.cookie('pass', req.body.pass, { maxAge: 365 * 24 * 60 * 60 * 1000 });
+				}
+				res.redirect('/home');	
+			}
+			else if ( check === 'invalid-password' )
+			{
+				console.log('password errata');
+				res.render('login', { error:'incorrect password' });
+			}
+			else if ( check === 'user-not-found' )
+			{
+				console.log('utente non trovato');
+				res.render('login', { error:'user not found' });
+			}
+			else
+			{
+				console.log('errore di connessione');
+				res.send(400);
 			}
 		});
 	});
 	
-	app.get('/helloworld', function(req, res) {
-		helloworld.ciao(function(data) {
-			res.json(data);
-		});
+	app.get('/home', function(req, res) {
+	    if (req.session.user == null){
+			// if user is not logged-in redirect back to login page //
+	        res.redirect('/');
+	    }   
+	    else
+	    {
+			res.render('home', { title: 'Benvenuto! Adesso loggati o come player o come allenatore' });
+			//for AJAX
+			// app.render('home', { layout: false,title: 'Hello - Please Login To Your Account' }, function(err, html){
+			//   var response = {
+			//     some_data: 'blablabla',
+			//     some_more_data: [5, 8, 10, 67],
+			//     my_html: html
+			//   };
+			//   res.send(response).end();
+			// });
+			//res.send(200).end();
+	    }
+	});
+
+	app.post('/home', function(req, res) {
+
 	});
 }
 // var router = app.Router();
