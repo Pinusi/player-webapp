@@ -1,11 +1,9 @@
 extends layout
 
 block content
-	h1= title
 	p Welcome #{user}
-	#login-container
-		form( method="post")#login-form.well.span4
-			label #{user} 
-			input(type="text", name="user")#user
-			button.somebutton
-			div.error #{error}
+	#players
+		each question in questions
+			label #{question.txt} 
+			input(type="text", name=question.id id=question.id).answers
+		button.sendanswers

@@ -82,7 +82,6 @@ module.exports = function(app) {
 	});
 
 	app.post('/home', function(req, res) {
-		console.log('login');
 		UL.login(req.body.user, req.body.pass, function(check){
 			if ( check === 'player' )
 			{
@@ -144,8 +143,7 @@ module.exports = function(app) {
 	    		{
 	    			// if user is a player //
 	    			PL.getQuestionsTxt(function(questions){
-	    				console.log(questions);
-	    				res.render('player_form', { questions: 'Benvenuto!', user: req.session.name});
+	    				res.render('player_form', { questions: questions, user: req.session.name});
 	    			});
 	    		}
 	    		else
@@ -158,6 +156,6 @@ module.exports = function(app) {
 	});
 
 	app.post('/playerform', function(req, res) {
-
+		console.log(req.body);
 	});
 }

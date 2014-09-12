@@ -5,7 +5,6 @@ $(document).ready(function() {
 
 	    var user = $('#user').val();
 	    var pass = $('#pass').val();
-	    console.log(user + pass);
 	    $.ajax({
 	        url: '/home',
 	        type: 'POST',
@@ -24,6 +23,45 @@ $(document).ready(function() {
 	        	}
 	        }
 	    });  
+
+	});
+
+	$('.sendanswers').click(function() { 
+
+	    var answers = [];
+	    var form_completo = true;
+	    
+	    $('.answers').each(function(){
+	    	if( $(this).val() )
+    		answers.push(
+    		{
+    			id: $(this).attr('id'),
+    			txt: $(this).val()
+    		});
+    		else
+    		{
+    			form_completo = false;
+    		}
+    	});
+
+	    if(form_completo)
+	    {
+		    $.ajax({
+		        url: '/playerform',
+		        type: 'POST',
+		        data: {answers: answers}, // An object with the key 'submit' and value 'true;
+		        success: function (result) {
+		        	if( result.type === 'trainee' )
+		        	{
+		        		//perfetto
+		        	}
+		        	else
+		        	{
+		        		//error
+		        	}
+		        }
+		    }); 
+		} 
 
 	});
 

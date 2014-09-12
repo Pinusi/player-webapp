@@ -10,9 +10,15 @@ db.getQuestionsList(function(question_list_data){
 exports.getQuestionsTxt = function(callback)
 {
 	var questions_array = [];
-	for (var question in question_list.questions) 
+	for (var questionid in question_list.questions) 
 	{
-	  questions_array.push(question_list.questions[question].txt);
+	  	if(question_list.questions[questionid].on){
+		  	questions_array.push(
+			  	{	
+			  		txt: question_list.questions[questionid].txt,
+			  		id: questionid
+			  	});
+		}
 	}
 	callback(questions_array);
 }
