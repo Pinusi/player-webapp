@@ -1,17 +1,13 @@
-var nano = require('nano')('http://localhost:5984');
-var playerdb = nano.db.use('player-wellness');
-var app_login = null;
+//db manager
+var db = require('./db');
 
-playerdb.get('app_login', { revs_info: true }, function(err, body) {
-	if (!err){
-	  	app_login = body;
-	  }
-	  else
-	  {
-	  	console.log(err);
-	  }
+//get the app credentials and store them
+var app_login = undefined;
+db.getAppLogin(function(app_login_data){
+	app_login = app_login_data;
 });
 
+//check the login
 exports.login = function(user, pass, callback)
 {
 	if( user == app_login.username )
