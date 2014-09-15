@@ -19,11 +19,11 @@ exports.login = function(user, pass, callback)
 			{
 				if( user_list[i].type == 'trainee' )
 				{
-					callback('trainee');
+					callback('trainee', user_list[i].id);
 				}
 				else
 				{
-					callback('player');
+					callback('player', user_list[i].id);
 				}
 			}
 			else

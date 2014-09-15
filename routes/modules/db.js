@@ -1,6 +1,8 @@
 //db manager that handles calls to db
 var nano = require('nano')('http://localhost:5984');
 var playerdb = nano.db.use('player-wellness');
+// var players_list_doc = undefined;
+// var players_list_rev = 
 
 exports.getUserList = function(callback)
 {
@@ -37,7 +39,6 @@ exports.getQuestionsList = function(callback)
 	playerdb.get('questions_list', { revs_info: true }, function(err, body) {
 		if (!err){
 		  	var questions_list = body;
-		  	console.log(questions_list);
 		  	callback(questions_list);
 		  }
 		  else
@@ -45,4 +46,62 @@ exports.getQuestionsList = function(callback)
 		  	console.log(err);
 		  }
 	});
+}
+
+exports.getPLayerDocument = function(callback)
+{
+	// playerdb.view("players_list_updates", "get-players", [], function(players) {
+	// 	var players_list = players;
+	// 	console.log(players)
+	// });
+	playerdb.get('players_list', { revs_info: true }, function(err, body) {
+		if (!err){
+		  	// players_list_doc = body;
+		  	var players_list = body.players;
+		  	callback(players_list);
+		  }
+		  else
+		  {
+		  	console.log(err);
+		  }
+	});
+}
+
+exports.getOnePLayer = function(player_id, callback)
+{
+	playerdb.view("players_list_updates", "get-playerbyid", [player_id], function(player) {
+		callback(player);
+	});
+}
+
+exports.savePlayerDocument = function(players_update, callback)
+{
+	// console.log(players_update);
+	// players_list_doc.players = players_update;
+	// playerdb.insert(players_list_doc, 'players_list', function(err, body) {
+	//   if (!err)
+	//     console.log(body);
+	// });
+	playerdb.atomic(
+		"players_list_updates", 
+		"update-players", 
+		"players_list", 
+  		{players: players_update}, 
+  		function(b,e) { 
+  			console.log(e); 
+  		}
+  	);
+}
+
+exports.saveOnePlayer = function(player_update, player_id, callback)
+{
+	playerdb.atomic(
+		"players_list_updates", 
+		"update-player", 
+		"players_list", 
+  		{player: player_update, id: player_id}, 
+  		function(b,e) { 
+  			console.log(e); 
+  		}
+  	);
 }

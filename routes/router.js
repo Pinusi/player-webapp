@@ -30,7 +30,6 @@ module.exports = function(app) {
 			if ( check === 'perfect' )
 			{
 				console.log('login effettuato');
-				console.log(req.body);
 				//res.send(200).end();
 				req.session.user = req.body.user;
 				//res.render('home', { title: 'Hello - Please Login To Your Account' });
@@ -82,12 +81,13 @@ module.exports = function(app) {
 	});
 
 	app.post('/home', function(req, res) {
-		UL.login(req.body.user, req.body.pass, function(check){
+		UL.login(req.body.user, req.body.pass, function(check, id){
 			if ( check === 'player' )
 			{
 				console.log('login effettuato player');
 				req.session.name = req.body.user;
 				req.session.type = check;
+				req.session.userid = id;
 				app.render('player_form', { layout: false }, function(err, html){
 				  	var response = {
 				  		type: check,
@@ -101,6 +101,7 @@ module.exports = function(app) {
 				console.log('login effettuato allenatore');
 				req.session.name = req.body.user;
 				req.session.type = check;
+				req.session.userid = id;
 				var response = {
 					type: check
 			  	};
@@ -156,6 +157,7 @@ module.exports = function(app) {
 	});
 
 	app.post('/playerform', function(req, res) {
-		console.log(req.body);
+		var answers = req.body.answers;
+		PL.saveAnswers(answers, req.session.userid);
 	});
 }
