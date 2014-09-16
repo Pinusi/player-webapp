@@ -1,6 +1,24 @@
 extends layout
 
 block content
+	div.container
+		div.row.row-no-top
+			div.content.dash
+				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
+				div.col-xs-6.col-sm-6.col-md-6.col-lg-6
+					div.pageInstruct Select Dashboard
+					div.arrowWhiteDown
+				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
+					a(href="#")
+						div.thfclogo.right
+				div.col-xs-6.col-sm-6.col-md-6.col-lg-6.dashBtnCont
+					a(href="#")
+						div.dashBtn
+							p Operator
+				div.col-xs-6.col-sm-6.col-md-6.col-lg-6.dashBtnCont
+					a(href="#")
+						div.dashBtn
+							p Player
 	h1= title
 	p Welcome to #{title}
 	#login-giocatori
