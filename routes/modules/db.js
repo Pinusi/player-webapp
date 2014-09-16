@@ -69,8 +69,16 @@ exports.getPLayerDocument = function(callback)
 
 exports.getOnePLayer = function(player_id, callback)
 {
-	playerdb.view("players_list_updates", "get-playerbyid", [player_id], function(player) {
-		callback(player);
+	console.log(player_id);
+	playerdb.view("players_list_updates", "get-playerbyid", { key: [player_id]}, function(err,body) {
+		if (!err) {
+			var player = body.rows[0].value;
+			callback(player);
+		}
+		else
+		{
+			console.log(err);
+		}
 	});
 }
 

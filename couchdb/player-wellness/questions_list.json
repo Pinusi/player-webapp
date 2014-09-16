@@ -1,0 +1,18 @@
+{
+   "_id": "questions_list",
+   "_rev": "4-467f7f37480c73dc2c6212ef8d479a04",
+   "questions": {
+       "q_1": {
+           "txt": "How are you?",
+           "on": false
+       },
+       "q_2": {
+           "txt": "What's your name?",
+           "on": true
+       },
+       "q_3": {
+           "txt": "What's your height?",
+           "on": true
+       }
+   }
+}

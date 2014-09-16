@@ -157,7 +157,10 @@ module.exports = function(app) {
 	});
 
 	app.post('/playerform', function(req, res) {
+		//get all the answers
 		var answers = req.body.answers;
+
+		//save them
 		PL.saveAnswers(answers, req.session.userid);
 	});
 }

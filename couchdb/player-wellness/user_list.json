@@ -1,0 +1,22 @@
+{
+   "_id": "user_list",
+   "_rev": "4-c64737a239ad2c2488f1909ae365ff62",
+   "users": [
+       {
+           "name": "Giacomo",
+           "surname": "Bonfatti",
+           "username": "bonf",
+           "password": "jack",
+           "id": "t_1",
+           "type": "trainee"
+       },
+       {
+           "name": "Andrea",
+           "surname": "Trinchero",
+           "username": "trinka",
+           "password": "trinka",
+           "id": "p_1",
+           "type": "player"
+       }
+   ]
+}
