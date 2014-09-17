@@ -1,0 +1,36 @@
+extends layout
+
+block content
+	div.container
+		div.row.row-no-top
+			div.content
+				div.dobPopUp
+					div.playerCircle
+						div.playerImage.dier
+					div.playerInfo
+						span.playerNo 15
+					div.dobInstruct Enter date of birth
+					form
+						input(type="text" name="Day" placeholder="DD")
+						input(type="text" name="Month" placeholder="MM")
+						input(type="text" name="Year" placeholder="YY")
+					a(href='#')
+						div.dobPopUpBtn
+							div.arrowBlueRight
+				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
+					a(href='#')
+						.backBtn
+							.arrowBlueLeft
+				div.col-xs-6.col-sm-6.col-md-6.col-lg-6
+					div.pageInstruct Select player picture
+					div.arrowWhiteDown
+				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
+					a(href='#')
+						div.thfclogo.right
+
+				div.col-xs-6.col-sm-3.col-md-3.col-lg-3
+					div.playerCircle
+						div.playerImage.lloris
+					div.playerInfo
+						span.playerNo.gk 1
+						| Lloris

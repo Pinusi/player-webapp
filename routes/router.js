@@ -2,6 +2,7 @@ var express = require('express');
 var UL = require('./modules/users');
 var AL = require('./modules/login');
 var PL = require('./modules/player');
+var DS = require('./modules/dashboard');
 
 module.exports = function(app) {
 
@@ -15,10 +16,13 @@ module.exports = function(app) {
 		{
 	// attempt automatic login //
 			AL.login(req.cookies.user, req.cookies.pass, function(check){
-				if ( check === 'perfect' ){
+				if ( check === 'perfect' )
+				{
 				    req.session.user = req.cookies.user;
 					res.redirect('/home');
-				}	else{
+				}	
+				else
+				{
 					res.render('login', { title: 'Hello - Please Login To Your Account' });
 				}
 			});
@@ -29,7 +33,7 @@ module.exports = function(app) {
 		AL.login(req.body.user, req.body.pass, function(check){
 			if ( check === 'perfect' )
 			{
-				console.log('login effettuato');
+				console.log('login della app effettuato');
 				//res.send(200).end();
 				req.session.user = req.body.user;
 				//res.render('home', { title: 'Hello - Please Login To Your Account' });
@@ -81,6 +85,72 @@ module.exports = function(app) {
 	});
 
 	app.post('/home', function(req, res) {
+		//in this case is only for trainee
+		UL.login(req.body.user, req.body.pass, function(check, id){
+			if ( check === 'player' )
+			{
+				// console.log('login effettuato player');
+				// req.session.name = req.body.user;
+				// req.session.type = check;
+				// req.session.userid = id;
+				// app.render('player_form', { layout: false }, function(err, html){
+				//   	var response = {
+				//   		type: check,
+				// 		redirect: 'playerform'
+				//   	};
+				//   	res.send(response).end();
+				// });
+
+				console.log('youre not allowed in this area');
+				//ajax
+			}
+			else if( check === 'trainee' )
+			{
+				console.log('login effettuato allenatore');
+				req.session.name = req.body.user;
+				req.session.type = check;
+				req.session.userid = id;
+				var response = {
+					type: check
+			  	};
+				res.send(response).end();
+			}
+			else if ( check === 'invalid-password' )
+			{
+				console.log('password errata');
+				//ajax
+			}
+			else if ( check === 'user-not-found' )
+			{
+				console.log('utente non trovato');
+				//ajax
+			}
+			else
+			{
+				console.log('errore di connessione');
+				res.send(400);
+			}
+		});
+	});
+	
+	app.get('/dashboard', function(req, res) {
+		if (req.session.user == null)
+		{
+			// if user is not logged-in redirect back to login page //
+	        res.redirect('/');
+	    }
+	    else if(req.session.name != null && req.session.type == 'trainee')
+	    {
+	    	//do stuff for trainee dashboard
+	    }   
+	    else
+	    {
+	    	//it's a player
+	    	res.render('dashboard');
+	    }
+	});
+
+	app.post('/dashboard', function(req, res) {
 		UL.login(req.body.user, req.body.pass, function(check, id){
 			if ( check === 'player' )
 			{
@@ -98,14 +168,8 @@ module.exports = function(app) {
 			}
 			else if( check === 'trainee' )
 			{
-				console.log('login effettuato allenatore');
-				req.session.name = req.body.user;
-				req.session.type = check;
-				req.session.userid = id;
-				var response = {
-					type: check
-			  	};
-				res.send(response).end();
+				console.log('youre not allowed in this area');
+				//ajax
 			}
 			else if ( check === 'invalid-password' )
 			{

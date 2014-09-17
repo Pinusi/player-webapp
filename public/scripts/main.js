@@ -1,5 +1,10 @@
 $(document).ready(function() {
 
+	$('#playerdash').click(function() {
+		var protocol = window.location.protocol != '' ? window.location.protocol + "//" : '';
+		var host = window.location.host != '' ? window.location.host + "/" : '';
+		window.location.href = protocol + host + "dashboard";
+	});
 
 	$('.login').click(function() { 
 
