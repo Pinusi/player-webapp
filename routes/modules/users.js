@@ -2,38 +2,41 @@
 var db = require('./db');
 
 //get the users list and store it
-var user_list = undefined;
-db.getUserList(function(user_list_data){
-	user_list = user_list_data;
-});
+// var user_list = undefined;
+// db.getUserList(function(user_list_data){
+// 	user_list = user_list_data;
+// });
 
 //check the login
 exports.login = function(user, pass, callback)
 {
-	var notfound = true;
-	for (var i = 0; i < user_list.length; i++) {
-		if( user == user_list[i].username )
-		{
-			notfound = false;
-			if( pass == user_list[i].password )
+	db.getUserList(function(user_list)
+	{
+		var notfound = true;
+		for (var i = 0; i < user_list.length; i++) {
+			if( user == user_list[i].username )
 			{
-				if( user_list[i].type == 'trainee' )
+				notfound = false;
+				if( pass == user_list[i].password )
 				{
-					callback('trainee', user_list[i].id);
+					if( user_list[i].type == 'trainee' )
+					{
+						callback('trainee', user_list[i].id);
+					}
+					else
+					{
+						callback('player', user_list[i].id);
+					}
 				}
 				else
 				{
-					callback('player', user_list[i].id);
+					callback('invalid-password');
 				}
 			}
-			else
-			{
-				callback('invalid-password');
-			}
 		}
-	};
-	if( notfound )
-	{
-		callback('user-not-found');
-	}
+		if( notfound )
+		{
+			callback('user-not-found');
+		}
+	});
 }

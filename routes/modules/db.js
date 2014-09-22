@@ -1,6 +1,13 @@
 //db manager that handles calls to db
+var username = 'tottenham.reader';
+var password = 'entra';
 var nano = require('nano')('http://localhost:5984');
-var playerdb = nano.db.use('player-wellness');
+var playerdb = null;
+nano.auth(username, password, function(err, response, headers)
+    {
+    	nano = require('nano')({url: 'http://localhost:5984', cookie: headers['set-cookie']})
+        playerdb = nano.db.use('player-wellness');
+    });
 // var players_list_doc = undefined;
 // var players_list_rev = 
 

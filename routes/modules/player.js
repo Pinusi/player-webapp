@@ -3,31 +3,33 @@ var db = require('./db');
 var moment = require('moment');
 
 //get the question list and store it
-var question_list = undefined;
-db.getQuestionsList(function(question_list_data){
-	question_list = question_list_data;
-});
+// var question_list = undefined;
+// db.getQuestionsList(function(question_list_data){
+// 	question_list = question_list_data;
+// });
 
 /*
 	GET THE QUESTIONS FORT THE playerform
  */
 exports.getQuestionsTxt = function(callback) //callback to execute
 {
-	//array of questions
-	var questions_array = [];
-	for (var questionid in question_list.questions) 
-	{
-	  	if(question_list.questions[questionid].on){
-		  	questions_array.push(
-			  	{	
-			  		txt: question_list.questions[questionid].txt,
-			  		id: questionid,
-			  		type: question_list.questions[questionid].type,
-			  		answers: question_list.questions[questionid].answers
-			  	});
+	db.getQuestionsList(function(question_list){
+		//array of questions
+		var questions_array = [];
+		for (var questionid in question_list.questions) 
+		{
+		  	if(question_list.questions[questionid].on){
+			  	questions_array.push(
+				  	{	
+				  		txt: question_list.questions[questionid].txt,
+				  		id: questionid,
+				  		type: question_list.questions[questionid].type,
+				  		answers: question_list.questions[questionid].answers
+				  	});
+			}
 		}
-	}
-	callback(questions_array);
+		callback(questions_array);
+	});
 }
 
 /*
