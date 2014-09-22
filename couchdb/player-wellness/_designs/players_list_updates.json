@@ -11,23 +11,6 @@
        },
        "get-playerbyid": {
            "map": "function(doc) { if(doc._id == 'players_list'){var players = doc.players; for(var i=0; i<players.length; i++){emit([players[i].id], players[i]);}} }"
-       },
-       "get-playerfordashboard": 
-       {
-         "map":
-           "function(doc){ 
-              if(doc._id == 'players_list')
-              {
-                var players = doc.players;
-                var player_model = [];
-                for(var i=0; i<players.length; i++)
-                {
-                  
-                }
-                emit(null, players[i]);
-              } 
-            }"
-        }
-
+       }
    }
 }

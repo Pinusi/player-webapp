@@ -1,6 +1,15 @@
 extends layout
 
 block content
+	script.
+		$(document).ready(function() {
+			if(!window.wellnessMain)
+			{
+				window.wellnessMain = new WELLNESS.CLIENT.Main();
+			}
+			window.wellnessMain.addEvents('home');
+		});
+
 	div.container
 		div.row.row-no-top
 			div.content.dash
@@ -12,19 +21,38 @@ block content
 					a(href="#")
 						div.thfclogo.right
 				div.col-xs-6.col-sm-6.col-md-6.col-lg-6.dashBtnCont
-					a(href="#")
+					a(href="#" class ='dashA' id="traineedash")
 						div.dashBtn
 							p Operator
 				div.col-xs-6.col-sm-6.col-md-6.col-lg-6.dashBtnCont
-					a(href="#" id="playerdash")
+					a(href="#" class ='dashA' id="playerdash")
 						div.dashBtn
 							p Player
-	h1= title
-	p Welcome to #{title}
-	#login-giocatori
-		//- form( method="post", action="players_login")#login-form.well.span4
-		label Username 
-		input(type="text", name="user")#user
-		label Password
-		input(type="password", name="pass")#pass
-		button.login
+
+	div.popOverlay(style='display:none;')#traineepop
+		div.dobPopUp
+			div.playerCircle
+				div.playerImage.dier
+			div.dobInstruct Login
+			label Username 
+			input(type="text", name="user")#traineeuser
+			label Password
+			input(type="password", name="pass")#traineepass
+			a(href='#' id='traineelogin')
+				div.dobPopUpBtn
+					div.arrowBlueRight
+			a(href='#' id='traineeclose')
+				div.dobPopUpBtn
+					div.arrowBlueRight
+	
+
+
+	//- h1= title
+	//- p Welcome to #{title}
+	//- #login-giocatori
+	//- 	//- form( method="post", action="players_login")#login-form.well.span4
+	//- 	label Username 
+	//- 	input(type="text", name="user")#user
+	//- 	label Password
+	//- 	input(type="password", name="pass")#pass
+	//- 	button.login

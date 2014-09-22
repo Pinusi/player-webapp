@@ -77,7 +77,7 @@ exports.getOnePLayer = function(player_id, callback)
 		}
 		else
 		{
-			console.log(err);
+			console.log('error in getOnePLayer');
 		}
 	});
 }
@@ -95,8 +95,14 @@ exports.savePlayerDocument = function(players_update, callback)
 		"update-players", 
 		"players_list", 
   		{players: players_update}, 
-  		function(b,e) { 
-  			console.log(e); 
+  		function(err,body) {
+  			if (!err) {
+  				console.log(body);
+  			}
+  			else
+  			{
+  				console.log('error in savePlayerDocument');
+  			}
   		}
   	);
 }
@@ -108,8 +114,14 @@ exports.saveOnePlayer = function(player_update, player_id, callback)
 		"update-player", 
 		"players_list", 
   		{player: player_update, id: player_id}, 
-  		function(b,e) { 
-  			console.log(e); 
+  		function(err,body) {
+  			if (!err) {
+				callback('ok'); 
+			}
+			else
+			{
+				console.log('error in saveOnePlayer');
+			}
   		}
   	);
 }

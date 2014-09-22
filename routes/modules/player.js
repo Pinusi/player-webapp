@@ -21,7 +21,9 @@ exports.getQuestionsTxt = function(callback) //callback to execute
 		  	questions_array.push(
 			  	{	
 			  		txt: question_list.questions[questionid].txt,
-			  		id: questionid
+			  		id: questionid,
+			  		type: question_list.questions[questionid].type,
+			  		answers: question_list.questions[questionid].answers
 			  	});
 		}
 	}
@@ -31,7 +33,7 @@ exports.getQuestionsTxt = function(callback) //callback to execute
 /*
 	SAVE THE ANSWERS AFTER SUBMITTING
  */
-exports.saveAnswers = function(answers, id) //answers to store, playerid
+exports.saveAnswers = function(answers, id, callback) //answers to store, playerid
 {
 	//save playerid
 	var playerID = id;
@@ -95,6 +97,8 @@ exports.saveAnswers = function(answers, id) //answers to store, playerid
    		}
 
    		//save everything to the db
-   		db.saveOnePlayer(player,playerID);
+   		db.saveOnePlayer(player,playerID,function(response){
+   			callback('ok');
+   		});
 	});
 }

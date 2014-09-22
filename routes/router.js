@@ -4,17 +4,29 @@ var AL = require('./modules/login');
 var PL = require('./modules/player');
 var DS = require('./modules/dashboard');
 
+//SESSION
+//session.type
+//session.name
+//session.userid
+//session.user (app user)
+
 module.exports = function(app) {
 
 	// INDEX //
 	app.get('/', function(req, res){
-	//check if the user's credentials are saved in a cookie //
+		//clear session
+		req.session.user = null;
+		req.session.type = null;
+		req.session.name = null;
+		req.session.userid = null;
+
+		//check if the user's credentials are saved in a cookie //
 		if (req.cookies.user == undefined || req.cookies.pass == undefined){
 			res.render('login', { title: 'Hello - Please Login To Your Account' });
 		}	
 		else
 		{
-	// attempt automatic login //
+			// attempt automatic login //
 			AL.login(req.cookies.user, req.cookies.pass, function(check){
 				if ( check === 'perfect' )
 				{
@@ -64,66 +76,51 @@ module.exports = function(app) {
 	
 	// HOME //
 	app.get('/home', function(req, res) {
+		//clear session
+		req.session.type = null;
+		req.session.name = null;
+		req.session.userid = null;
+
 	    if (req.session.user == null){
 			// if user is not logged-in redirect back to login page //
 	        res.redirect('/');
 	    }   
 	    else
 	    {
-			res.render('home', { title: 'Benvenuto! Adesso loggati o come player o come allenatore' });
-			//for AJAX
-			// app.render('home', { layout: false,title: 'Hello - Please Login To Your Account' }, function(err, html){
-			//   var response = {
-			//     some_data: 'blablabla',
-			//     some_more_data: [5, 8, 10, 67],
-			//     my_html: html
-			//   };
-			//   res.send(response).end();
-			// });
-			//res.send(200).end();
+			res.render('home');
 	    }
 	});
 
 	app.post('/home', function(req, res) {
 		//in this case is only for trainee
 		UL.login(req.body.user, req.body.pass, function(check, id){
-			if ( check === 'player' )
-			{
-				// console.log('login effettuato player');
-				// req.session.name = req.body.user;
-				// req.session.type = check;
-				// req.session.userid = id;
-				// app.render('player_form', { layout: false }, function(err, html){
-				//   	var response = {
-				//   		type: check,
-				// 		redirect: 'playerform'
-				//   	};
-				//   	res.send(response).end();
-				// });
-
-				console.log('youre not allowed in this area');
-				//ajax
-			}
-			else if( check === 'trainee' )
+			if( check === 'trainee' )
 			{
 				console.log('login effettuato allenatore');
 				req.session.name = req.body.user;
 				req.session.type = check;
 				req.session.userid = id;
 				var response = {
-					type: check
+					type: check,
+					redirect: 'dashboard'
 			  	};
 				res.send(response).end();
 			}
 			else if ( check === 'invalid-password' )
 			{
 				console.log('password errata');
-				//ajax
+				var response = {
+					type: check
+			  	};
+				res.send(response).end();
 			}
-			else if ( check === 'user-not-found' )
+			else if ( check === 'user-not-found' || check === 'player' )
 			{
 				console.log('utente non trovato');
-				//ajax
+				var response = {
+					type: check
+			  	};
+				res.send(response).end();
 			}
 			else
 			{
@@ -134,19 +131,31 @@ module.exports = function(app) {
 	});
 	
 	app.get('/dashboard', function(req, res) {
+
 		if (req.session.user == null)
 		{
 			// if user is not logged-in redirect back to login page //
 	        res.redirect('/');
 	    }
-	    else if(req.session.name != null && req.session.type == 'trainee')
+	    else if(req.session.name != null && req.session.type == 'trainee' && req.session.userid != null)
 	    {
 	    	//do stuff for trainee dashboard
+	    	DS.getWhoAnswered(function(player_list){
+	    		console.log(player_list);
+	    		res.render('dashboard',{players:player_list,isTrainee:true});
+	    	});
+	    	
 	    }   
 	    else
 	    {
+	    	//cleaning
+	    	req.session.name = null;
+	    	req.session.userid = null;
 	    	//it's a player
-	    	res.render('dashboard');
+	    	req.session.type = 'player';
+	    	DS.getPLayers(function(player_list){
+	    		res.render('dashboard',{players:player_list});
+	    	});
 	    }
 	});
 
@@ -156,7 +165,6 @@ module.exports = function(app) {
 			{
 				console.log('login effettuato player');
 				req.session.name = req.body.user;
-				req.session.type = check;
 				req.session.userid = id;
 				app.render('player_form', { layout: false }, function(err, html){
 				  	var response = {
@@ -166,17 +174,12 @@ module.exports = function(app) {
 				  	res.send(response).end();
 				});
 			}
-			else if( check === 'trainee' )
-			{
-				console.log('youre not allowed in this area');
-				//ajax
-			}
 			else if ( check === 'invalid-password' )
 			{
 				console.log('password errata');
 				//ajax
 			}
-			else if ( check === 'user-not-found' )
+			else if ( check === 'user-not-found' || check === 'trainee' )
 			{
 				console.log('utente non trovato');
 				//ajax
@@ -197,26 +200,19 @@ module.exports = function(app) {
 	    }
 	    else
 	    {
-	    	if(req.session.name == null)
-	    	{
-	    		// if user is not logged-in //
-	    		res.redirect('/home');
-	    	}
-	    	else
-	    	{
-	    		if(req.session.type == 'player')
-	    		{
-	    			// if user is a player //
-	    			PL.getQuestionsTxt(function(questions){
-	    				res.render('player_form', { questions: questions, user: req.session.name});
-	    			});
-	    		}
-	    		else
-	    		{
-	    			// if user is something strange //
-	    			res.redirect('/home');
-	    		}
-	    	}
+    		if(req.session.name != null && req.session.type == 'player' && req.session.userid != null)
+    		{
+    			// if user is a player //
+    			PL.getQuestionsTxt(function(questions){
+    				console.log(questions);
+    				res.render('player_form', { questions: questions, user: req.session.name});
+    			});
+    		}
+    		else
+    		{
+    			// if user is something strange //
+    			res.redirect('/dashboard');
+    		}
 	    }
 	});
 
@@ -225,6 +221,12 @@ module.exports = function(app) {
 		var answers = req.body.answers;
 
 		//save them
-		PL.saveAnswers(answers, req.session.userid);
+		PL.saveAnswers(answers, req.session.userid,function(result){
+			var response = {
+		  		result: result,
+				redirect: 'dashboard'
+		  	};
+		  	res.send(response).end();
+		});
 	});
 }

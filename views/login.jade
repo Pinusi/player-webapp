@@ -1,7 +1,12 @@
-
 extends layout
 
 block content
+
+	script.
+		$(document).ready(function() {
+			window.wellnessMain = new WELLNESS.CLIENT.Main();
+		});
+		
 	#login-container
 		form( method="post")#login-form.well.span4
 			label Username 
