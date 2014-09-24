@@ -15,7 +15,8 @@
     "nano": "~5.11.0",
     "serve-favicon": "~2.0.1",
     "moment": "~2.8.3",
-    "nodemailer": "~1.0.0"
+    "nodemailer": "~1.0.0",
+    "excel-export": "~0.3.11"
   }
 }
 

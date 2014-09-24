@@ -83,16 +83,19 @@ module.exports = function(app) {
 
 		DS.getPlayerExcel(function(result){
 			console.log('FINITO');
+			res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+		    res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
+		    res.end(result, 'binary');
 		});
 
-	    if (req.session.user == null){
-			// if user is not logged-in redirect back to login page //
-	        res.redirect('/');
-	    }   
-	    else
-	    {
-			res.render('home');
-	    }
+	  //   if (req.session.user == null){
+			// // if user is not logged-in redirect back to login page //
+	  //       res.redirect('/');
+	  //   }   
+	  //   else
+	  //   {
+			// res.render('home');
+	  //   }
 	});
 
 	app.post('/home', function(req, res) {
