@@ -81,6 +81,10 @@ module.exports = function(app) {
 		req.session.name = null;
 		req.session.userid = null;
 
+		DS.getPlayerExcel(function(result){
+			console.log('FINITO');
+		});
+
 	    if (req.session.user == null){
 			// if user is not logged-in redirect back to login page //
 	        res.redirect('/');
@@ -234,7 +238,7 @@ module.exports = function(app) {
 
 		//save them
 		DS.getPlayerExcel(function(result){
-			
+			console.log('FINITO');
 		});
 	});
 }

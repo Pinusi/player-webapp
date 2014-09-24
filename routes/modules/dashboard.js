@@ -1,6 +1,7 @@
 //db manager
 var db = require('./db');
 var moment = require('moment');
+var nodemailer = require('nodemailer');
 
 /*
 	GET THE QUESTIONS + players
@@ -41,5 +42,29 @@ exports.getPLayers = function(callback) //callback to execute
 
 exports.getPlayerExcel = function(callback) //callback to execute
 {
+	var transporter = nodemailer.createTransport({
+	    service: 'Gmail',
+	    auth: {
+	        user: 'pinusipinusi@gmail.com',
+	        pass: ''
+	    }
+	});
 
+	// setup e-mail data with unicode symbols
+	var mailOptions = {
+	    from: 'Cecilia De Conto <pinusipinusi@gmail.com>', // sender address
+	    to: 'deconto.cecilia@gmail.com', // list of receivers
+	    subject: 'Hello', // Subject line
+	    text: 'Hello world', // plaintext body
+	    html: '<b>Hello world</b>' // html body
+	};
+
+	transporter.sendMail(mailOptions, function(error, info){
+	    if(error){
+	        console.log(error);
+	    }else{
+	        console.log('Message sent: ' + info.response);
+	        callback();
+	    }
+	});
 }
