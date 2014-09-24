@@ -1,7 +1,13 @@
 //db manager that handles calls to db
 var username = 'tottenham.reader';
 var password = 'entra';
+
+//LOCAL DB
 var nano = require('nano')('http://localhost:5984');
+//IRIS COUCH 
+// var nano = require('nano')('http://pinusi.iriscouch.com:5984');
+// var nano = require('nano')('http://pinusi.iriscouch.com');
+
 var playerdb = null;
 nano.auth(username, password, function(err, response, headers)
     {

@@ -38,3 +38,8 @@ exports.getPLayers = function(callback) //callback to execute
 		callback(player_list);
 	});
 }
+
+exports.getPlayerExcel = function(callback) //callback to execute
+{
+
+}

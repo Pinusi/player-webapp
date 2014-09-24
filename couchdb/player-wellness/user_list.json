@@ -1,6 +1,6 @@
 {
    "_id": "user_list",
-   "_rev": "4-c64737a239ad2c2488f1909ae365ff62",
+   "_rev": "6-a6244cb664484969501eecba1ee3f53b",
    "users": [
        {
            "name": "Giacomo",
@@ -13,9 +13,17 @@
        {
            "name": "Andrea",
            "surname": "Trinchero",
-           "username": "trinka",
-           "password": "trinka",
+           "username": "trinchero",
+           "password": "16-10-88",
            "id": "p_1",
+           "type": "player"
+       },
+       {
+           "name": "Tom",
+           "surname": "Allison",
+           "username": "allison",
+           "password": "01-01-00",
+           "id": "p_2",
            "type": "player"
        }
    ]

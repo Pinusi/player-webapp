@@ -1,6 +1,7 @@
 {
    "_id": "_design/players_list_updates",
-   "_rev": "107-8cc9de7f1db94f5f710698a70d3ed656",
+   "_rev": "160-dd14ff37b31edb76cd45055fafeb9b58",
+   "language": "javascript",
    "updates": {
        "update-players": "function (doc, req) {var body = JSON.parse(req.body); doc.players = body.players; return [doc, toJSON(req)];}",
        "update-player": "function (doc, req) {var body = JSON.parse(req.body); var id = body.id; var players = doc.players; for(var i = 0; i<players.length; i++){if(players[i].id == id){players[i] = body.player}}; return [doc, toJSON(req)];}"
@@ -11,6 +12,9 @@
        },
        "get-playerbyid": {
            "map": "function(doc) { if(doc._id == 'players_list'){var players = doc.players; for(var i=0; i<players.length; i++){emit([players[i].id], players[i]);}} }"
+       },
+       "get-whoanswered": {
+           "map": "function(doc) { \n\tif(doc._id == 'players_list')\n\t{\n\t\tvar players = doc.players; \n\t\tfor(var i=0; i<players.length; i++)\n\t\t{\n\t\t\tfor(answer in player[i].answers)\n\t\t\t{\n\t\t\t\t\n\t\t\t\temit([player[i].id], players[i]);\n\t\t\t}\n\t\t}\n\t}\n}"
        }
    }
 }

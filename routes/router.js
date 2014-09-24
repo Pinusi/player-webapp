@@ -229,4 +229,12 @@ module.exports = function(app) {
 		  	res.send(response).end();
 		});
 	});
+
+	app.post('/excel', function(req, res) {
+
+		//save them
+		DS.getPlayerExcel(function(result){
+			
+		});
+	});
 }

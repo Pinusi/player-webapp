@@ -1,17 +1,39 @@
 {
    "_id": "questions_list",
-   "_rev": "4-467f7f37480c73dc2c6212ef8d479a04",
+   "_rev": "5-8d7038b8abd426cd7423428a49aab80f",
    "questions": {
        "q_1": {
-           "txt": "How are you?",
-           "on": false
+           "txt": "Weight (kg)",
+           "type": "txt",
+           "on": true
        },
        "q_2": {
-           "txt": "What's your name?",
+           "txt": "Energy levels",
+           "type": "tap",
+           "answers": [
+               "Very Fresh",
+               "Fresh",
+               "Normal",
+               "More tired than normal",
+               "Always Tired"
+           ],
            "on": true
        },
        "q_3": {
-           "txt": "What's your height?",
+           "txt": "Sleep quality",
+           "type": "tap",
+           "answers": [
+               "Very restful",
+               "Good",
+               "Difficulty falling asleep",
+               "Restless sleep",
+               "Insomnia"
+           ],
+           "on": true
+       },
+       "q_4": {
+           "txt": "Hours of sleep",
+           "type": "txt",
            "on": true
        }
    }
