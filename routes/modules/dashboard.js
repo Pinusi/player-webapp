@@ -69,7 +69,7 @@ exports.getPlayerExcel = function(callback) //callback to execute
 	//     }
 	// });
 	var conf ={};
-    // conf.stylesXmlFile = style;
+    conf.stylesXmlFile = style;
       conf.cols = [{
         caption:'string',
         type:'string',
