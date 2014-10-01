@@ -7,7 +7,7 @@ block content
 			{
 				window.wellnessMain = new WELLNESS.CLIENT.Main();
 			}
-			window.wellnessMain.addEvents('dashboard');
+			window.wellnessMain.addEvents('dashboard', !{isTrainee});
 		});
 
 	div.container
@@ -15,16 +15,21 @@ block content
 			div.content
 				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
 					a(href='#' id='backtohome')
-						.backBtn
+						.navBtn.back
 							.arrowBlueLeft
 				div.col-xs-6.col-sm-6.col-md-6.col-lg-6
 					div.pageInstruct Select player picture
 					div.arrowWhiteDown
 				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
 					if isTrainee
-						a(href='#')
-							.gridBtn.right
+						//- a(href='#')#sendreport
+						//- 	.gridBtn.right
+						//- 		.gridBlue
+						a(href='#')#changequestions
+							.navBtn.grid
 								.gridBlue
+						a(href='#')#generalreport
+							.navBtn.live ...
 					else
 						a(href='#')
 							div.thfclogo.right
@@ -38,34 +43,30 @@ block content
 									else
 										div.playerImage(class=player.surname.toLowerCase())
 								div.playerInfo
-									if player.formCompleated == true
-										span.playerNo= player.player_number
-										= player.surname
-									else
-										span.playerNo.gk= player.player_number
-										= player.surname
+									span.playerNo= player.player_number
+									= player.surname
 						else
 							a.player_login(data-user=player.surname.toLowerCase())
 								div.playerCircle
 									div.playerImage(class=player.surname.toLowerCase())
 								div.playerInfo
-									span.playerNo.gk= player.player_number
+									span.playerNo= player.player_number
 									= player.surname
 
 	div.popOverlay(style='display:none;')#playerpop
-		div.dobPopUp
-			div.playerCircle
-				div.playerImage.dier
+		div.popUp.dob
+			div.popUpPlayerCircle
+				div.playerImage
 			div.playerInfo
 				span.playerNo
-			div.dobInstruct Enter date of birth
+			div.popUpInstruct.dob Enter date of birth
 			form
 				input(type="text" name="Day" placeholder="DD" maxlength="2")#playerday
 				input(type="text" name="Month" placeholder="MM" maxlength="2")#playermonth
 				input(type="text" name="Year" placeholder="YY" maxlength="2")#playeryear
 			a(href='#' id='playerlogin')
-				div.dobPopUpBtn
+				div.popUpBtn.dob
 					div.arrowBlueRight
-			a(href='#' id='playerclose')
-				div.dobPopUpBtn
-					div.arrowBlueRight
+			//- a(href='#' id='playerclose')
+			//- 	div.dobPopUpBtn
+			//- 		div.arrowBlueRight

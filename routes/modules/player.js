@@ -24,7 +24,9 @@ exports.getQuestionsTxt = function(callback) //callback to execute
 				  		txt: question_list.questions[questionid].txt,
 				  		id: questionid,
 				  		type: question_list.questions[questionid].type,
-				  		answers: question_list.questions[questionid].answers
+				  		on: question_list.questions[questionid].on,
+				  		answers: question_list.questions[questionid].answers,
+				  		popup: question_list.questions[questionid].popup
 				  	});
 			}
 		}
@@ -41,66 +43,91 @@ exports.saveAnswers = function(answers, id, callback) //answers to store, player
 	var playerID = id;
 	//today
 	var date = moment().format('YYYY-MM-DD');
+	//everybody done
+	var isEverybodyDone = true;
 
 	//same code but getting all the player list
-	// db.getPLayerDocument(function(players){
-	// 	for(var i = 0; i < players.length; i++) {
-	//    		var player = players[i];
-	//    		if( player.id === playerID ) {
-	//    			for (var i = 0; i < answers.length; i++) 
-	// 			{
-	// 	   			var answer_to_save = answers[i].txt;
-	// 	   			var questionID = answers[i].id;
+	db.getPLayerDocument(function(players){
+		for(var j = 0; j < players.length; j++) {
+	   		var player = players[j];
+	   		if( player.id === playerID ) {
+	   			for (var i = 0; i < answers.length; i++) 
+				{
+		   			var answer_to_save = answers[i].txt;
+		   			var questionID = answers[i].id;
 
-	// 	   			var answer = player.answers[questionID];
-	// 	   			if( answer )
-	// 	   			{
-	// 	   				answer[date] = answer_to_save;
-	// 	   			}
-	// 	   			else
-	// 	   			{
-	// 	   				player.answers[questionID] = {};
-	// 	   				answer = player.answers[questionID];
-	// 	   				answer[date] = answer_to_save;
-	// 	   			}
-	// 	   		}
-	//    		}
-	//    	}
-	//    	console.log(players[0].answers);
-	//    	db.savePlayerDocument(players);
-	// });
+		   			var answer = player.answers[questionID];
+		   			if( answer )
+		   			{
+		   				answer[date] = answer_to_save;
+		   			}
+		   			else
+		   			{
+		   				player.answers[questionID] = {};
+		   				answer = player.answers[questionID];
+		   				answer[date] = answer_to_save;
+		   			}
+		   		}
+	   		}
+
+	   		//check if everybody is done
+	   		var isHeDone = false;
+	   		for(check_answ in player.answers)
+			{
+				// console.log(check_answ);
+				// console.log(date);
+				var answ_obj = player.answers[check_answ];
+				if(answ_obj[date])
+				{
+					isHeDone = true;
+				}
+			}
+			isEverybodyDone = isHeDone;
+	   	}
+
+	   	db.savePlayerDocument(players);
+	   	
+	   	if(isEverybodyDone)
+	   	{
+	   		callback('ok', true);
+	   	}
+	   	else
+	   	{
+	   		callback('ok', false);
+	   	}
+	});
 	
 	//just get the right player
-	db.getOnePLayer(playerID,function(player){
+	// db.getOnePLayer(playerID,function(player){
 
-		//loop trough the answers
-		for (var i = 0; i < answers.length; i++) 
-		{
-   			//store the answer and the id
-   			var answer_to_save = answers[i].txt;
-   			var questionID = answers[i].id;
+	// 	//loop trough the answers
+	// 	for (var i = 0; i < answers.length; i++) 
+	// 	{
+ //   			//store the answer and the id
+ //   			var answer_to_save = answers[i].txt;
+ //   			var questionID = answers[i].id;
 
-   			//get the one from the db
-   			var answer = player.answers[questionID];
+ //   			//get the one from the db
+ //   			var answer = player.answers[questionID];
 
-   			//if exist
-   			if( answer )
-   			{
-   				//override it
-   				answer[date] = answer_to_save;
-   			}
-   			else
-   			{
-   				//create it
-   				player.answers[questionID] = {};
-   				answer = player.answers[questionID];
-   				answer[date] = answer_to_save;
-   			}
-   		}
+ //   			//if exist
+ //   			if( answer )
+ //   			{
+ //   				//override it
+ //   				answer[date] = answer_to_save;
+ //   			}
+ //   			else
+ //   			{
+ //   				//create it
+ //   				player.answers[questionID] = {};
+ //   				answer = player.answers[questionID];
+ //   				answer[date] = answer_to_save;
+ //   			}
+ //   		}
 
-   		//save everything to the db
-   		db.saveOnePlayer(player,playerID,function(response){
-   			callback('ok');
-   		});
-	});
+ //   		//save everything to the db
+ //   		db.saveOnePlayer(player,playerID,function(response){
+ //   			callback('ok');
+ //   		});
+	// });
 }

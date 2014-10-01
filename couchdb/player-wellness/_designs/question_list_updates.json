@@ -1,0 +1,8 @@
+{
+   "_id": "_design/question_list_updates",
+   "_rev": "160-dd14ff37b31edb76cd45055fafeb9b58",
+   "language": "javascript",
+   "updates": {
+       "update-questions": "function (doc, req) {var body = JSON.parse(req.body); doc.questions = body.questions; return [doc, toJSON(req)];}"
+   }
+}

@@ -1,17 +1,20 @@
 //db manager that handles calls to db
 var username = 'tottenham.reader';
+// var password = 'tottenham2014';
 var password = 'entra';
 
 //LOCAL DB
-var nano = require('nano')('http://localhost:5984');
+// var nano = require('nano')('http://localhost:5984');
 //IRIS COUCH 
-// var nano = require('nano')('http://pinusi.iriscouch.com:5984');
+var nano = require('nano')('http://pinusi.iriscouch.com:5984');
 // var nano = require('nano')('http://pinusi.iriscouch.com');
+// var nano = require('nano')('http://pwtottenham.iriscouch.com:5984');
+// var nano = require('nano')('http://pwtottenham.iriscouch.com');
 
 var playerdb = null;
 nano.auth(username, password, function(err, response, headers)
     {
-    	nano = require('nano')({url: 'http://localhost:5984', cookie: headers['set-cookie']})
+    	nano = require('nano')({url: 'http://pinusi.iriscouch.com:5984', cookie: headers['set-cookie']})
         playerdb = nano.db.use('player-wellness');
     });
 // var players_list_doc = undefined;
@@ -59,6 +62,28 @@ exports.getQuestionsList = function(callback)
 		  	console.log(err);
 		  }
 	});
+}
+
+exports.saveQuestionsList = function(questions_update, callback)
+{
+	console.log(questions_update);
+	playerdb.atomic(
+		"question_list_updates", 
+		"update-questions", 
+		"questions_list", 
+  		{questions: questions_update}, 
+  		function(err,body) {
+  			if (!err) {
+  				console.log('saveQuestionsList saved');
+  				callback('ok');
+  			}
+  			else
+  			{
+  				console.log('error in saveQuestionsList');
+  				callback('error');
+  			}
+  		}
+  	);
 }
 
 exports.getPLayerDocument = function(callback)
@@ -110,7 +135,7 @@ exports.savePlayerDocument = function(players_update, callback)
   		{players: players_update}, 
   		function(err,body) {
   			if (!err) {
-  				console.log(body);
+  				console.log('savePlayerDocument saved');
   			}
   			else
   			{

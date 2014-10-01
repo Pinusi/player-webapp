@@ -16,34 +16,69 @@ block content
 		});
 
 	div.container
-	div.row.row-no-top
-		div.content
-			div.col-xs-3.col-sm-3.col-md-3.col-lg-3
-				a(href='#' id='backtodash')
-					div.backBtn
-						div.arrowBlueLeft
-			div.col-xs-6.col-sm-6.col-md-6.col-lg-6
-				div.pageInstruct #{user}
-				div.arrowWhiteDown
-			div.col-xs-3.col-sm-3.col-md-3.col-lg-3
-				a(href='#')
-					div.thfclogo.right
-			each question in questions
-				div.col-xs-12.col-sm-12.col-md-12.col-lg-12
-					if question.type === 'txt'
-						div.formQuestion(data-id=question.id, data-type=question.type)
-							div.formInstruct.input
-								p #{question.txt}
-							input(type='text')
-					else if question.type === 'tap'
-						div.formQuestion(data-id=question.id, data-type=question.type)
-							div.formInstruct
-								p #{question.txt}
-							each option in question.answers
-								a.formBtnCont
-									div.formBtn
-										p #{option}
-			div.col-xs-3.col-xs-offset-9.col-sm-3.col-sm-offset-9.col-md-3.col-dm-offset-9.col-lg-3.col-lg-offset-9
-				a(href='#')#submitanswers
-					div.submitBtn.right
-						div.arrowBlueRight
+		div.row.row-no-top
+			div.content
+				div.popUp.notComplete#enotcomplete(style='display:none;')
+					div.popUpInstruct You must answer all questions!
+					a(href="#")
+						div.popUpBtn.login
+							div.arrowBlueLeft
+				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
+					a(href='#' id='backtodash')
+						div.navBtn.back
+							div.arrowBlueLeft
+				div.col-xs-6.col-sm-6.col-md-6.col-lg-6
+					div.pageInstruct #{user}
+					div.arrowWhiteDown
+				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
+					a(href='#')
+						div.thfclogo.right
+				each question in questions
+					if question.on == "true"
+						div.col-xs-12.col-sm-12.col-md-12.col-lg-12
+							if question.type === 'txt'
+								div.formQuestion.serverAnsw(data-id=question.id, data-type=question.type)
+									div.formInstruct.input
+										p #{question.txt}
+									form
+										input(type='text')
+							else if question.type === 'tap'
+								div.formQuestion.serverAnsw(data-id=question.id, data-type=question.type)
+									div.formInstruct
+										p #{question.txt}
+									each option in question.answers
+										a.formBtnCont
+											div.formBtn
+												p #{option}
+							else if question.type === 'tappop'
+								div.formQuestion.serverAnsw(data-id=question.id, data-type=question.type)
+									div.formInstruct
+										p #{question.txt}
+									each option in question.answers
+										a.formBtnCont.tappop(popup-data-from=question.id)
+											div.formBtn
+												p #{option}
+				
+				div.col-xs-3.col-xs-offset-9.col-sm-3.col-sm-offset-9.col-md-3.col-dm-offset-9.col-lg-3.col-lg-offset-9
+					a(href='#')#submitanswers
+						div.submitBtn.right
+							div.arrowBlueRight
+
+	each question in questions
+		if question.on == "true"
+			if question.type === 'tappop'
+				div.popOverlay(popup-data-to=question.id, style='display:none;')
+					.popUp.muscle
+						.popUpInstruct.muscle #{question.popup.title}
+						.formQuestionCont
+							each parts,muscle in question.popup.questions
+								.formQuestion.muscle.popupAnsw(data-header=muscle)
+									.formInstruct.muscle
+										p #{muscle}
+									each part in parts
+										.formBtnCont.muscle
+											.formBtn.muscle
+												p #{part}
+						a.closePop(href='#')
+							.popUpBtn.muscle
+								.arrowBlueRight

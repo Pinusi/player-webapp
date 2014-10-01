@@ -20,30 +20,27 @@ block content
 				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
 					a(href="#")
 						div.thfclogo.right
-				div.col-xs-6.col-sm-6.col-md-6.col-lg-6.dashBtnCont
-					a(href="#" class ='dashA' id="traineedash")
-						div.dashBtn
-							p Operator
-				div.col-xs-6.col-sm-6.col-md-6.col-lg-6.dashBtnCont
-					a(href="#" class ='dashA' id="playerdash")
-						div.dashBtn
-							p Player
+				div.dashBtnCont
+					a.dashBtn(href="#" class ='dashA' id="traineedash")
+						//- div.dashBtn
+						p Operator
+				div.dashBtnCont
+					a.dashBtn(href="#" class ='dashA' id="playerdash")
+						//- div.dashBtn
+						p Player
 
 	div.popOverlay(style='display:none;')#traineepop
-		div.dobPopUp
-			div.playerCircle
-				div.playerImage.dier
-			div.dobInstruct Login
-			label Username 
-			input(type="text", name="user")#traineeuser
-			label Password
-			input(type="password", name="pass")#traineepass
+		div.popUp.login
+			div.popUpInstruct Operator Log In
+			//- input(type="text", name="Password", placeholder="Password")#traineeuser
+			form
+				input(type="password", name="Password", placeholder="Password")#traineepass
 			a(href='#' id='traineelogin')
-				div.dobPopUpBtn
+				div.popUpBtn.login
 					div.arrowBlueRight
-			a(href='#' id='traineeclose')
-				div.dobPopUpBtn
-					div.arrowBlueRight
+			//- a(href='#' id='traineeclose')
+			//- 	div.dobPopUpBtn
+			//- 		div.arrowBlueRight
 	
 
 

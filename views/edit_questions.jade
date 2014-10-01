@@ -1,0 +1,82 @@
+extends layout
+
+block content
+	script.
+		$(document).ready(function() {
+			if(!window.wellnessMain)
+			{
+				window.wellnessMain = new WELLNESS.CLIENT.Main();
+			}
+			questionsObj = !{JSON.stringify(questions)};
+			window.wellnessMain.addEvents('editquestions',questionsObj);
+		});
+
+	div.container
+		div.row.row-no-top
+			div.content
+				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
+					a(href='#' id='backtodash')
+						div.navBtn.back
+							div.arrowBlueLeft
+				div.col-xs-6.col-sm-6.col-md-6.col-lg-6
+					div.pageInstruct #{user}
+					div.arrowWhiteDown
+				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
+					a(href='#')
+						div.thfclogo.right
+				each question,key in questions
+					if question.on == "true"
+						div.col-xs-12.col-sm-12.col-md-12.col-lg-12
+							if question.type === 'txt'
+								div.formQuestion.pickquestions(data-id=key, data-type=question.type)
+									div.formInstruct.input
+										div.removeFormInstruct.minus
+											div.minusBlue		
+										input.question_topick(name="Answer", value="#{question.txt}", type="text")
+									form
+										input(type='text')
+							else if question.type === 'tap'
+								div.formQuestion.pickquestions(data-id=key, data-type=question.type)
+									div.formInstruct
+										div.removeFormInstruct.minus
+											div.minusBlue
+										input.question_topick(name="Answer", value="#{question.txt}", type="text")
+									each option in question.answers
+										a.formBtnCont
+											div.crossWhite
+											input.options_topick(name="Answer", value="#{option}", type="text")
+											//- p #{option}
+									if question.answers.length < 4
+										a.formBtnCont
+											.formBtn.addAnswer
+												.removeFormInstruct.addAnswer
+													.plusBlue
+							else if question.type === 'tappop'
+								div.formQuestion.pickquestions(data-id=key, data-type=question.type)
+									div.formInstruct
+										p #{question.txt}
+									each option in question.answers
+										a.formBtnCont
+											//- .tappop(popup-data-from=question)
+											div.formBtn
+												p #{option}
+				
+				div.col-xs-12.col-sm-12.col-md-12.col-lg-12#plusbutton
+					div.formQuestion
+						div.formInstruct
+							div.removeFormInstruct.plus
+								div.plusBlue
+
+				div.col-xs-3.col-xs-offset-9.col-sm-3.col-sm-offset-9.col-md-3.col-dm-offset-9.col-lg-3.col-lg-offset-9
+					a(href='#')#savequestions
+						div.submitBtn.right
+							div.arrowBlueRight
+
+			div.popOverlay( style='display:none;')#questiontype
+					.popUp
+						a.formBtnCont#addTextQuestions
+							div.formBtn
+								p Text
+						a.formBtnCont#addMPQuestions
+							div.formBtn
+								p Multiple Choice

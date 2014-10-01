@@ -7,13 +7,23 @@ block content
 			window.wellnessMain = new WELLNESS.CLIENT.Main();
 		});
 		
-	#login-container
-		form( method="post")#login-form.well.span4
-			label Username 
-			input(type="text", name="user")#user
-			label Password
-			input(type="password", name="pass")#pass
-			button.somebutton
-			label#remember-me.checkbox Remember Me
-				input(type="checkbox", checked='checked', name="remember")
-			div.error #{error}
+	div.container
+		div.row.row-no-top
+			div.content
+				div.siteCont
+					p Wellness
+				div.siteCont
+					p.mastheadHide Wellness
+					if error
+						div.popUp.site.incorrect#login-container
+					else
+						div.popUp.site#login-container
+							form( method="post")#login-form
+								input(type="text", name="user", placeholder="Username")#user
+								input(type="password", name="pass", placeholder="Password")#pass
+								//- button.somebutton
+								label#remember-me.checkbox Remember Me
+									input(type="checkbox", checked='checked', name="remember")
+							a(href="#")#login
+								div.popUpBtn.login
+									div.arrowBlueRight

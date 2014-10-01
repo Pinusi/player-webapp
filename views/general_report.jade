@@ -1,0 +1,40 @@
+extends layout
+
+block content
+	script.
+		$(document).ready(function() {
+			if(!window.wellnessMain)
+			{
+				window.wellnessMain = new WELLNESS.CLIENT.Main();
+			}
+			window.wellnessMain.addEvents('generalreport');
+		});
+
+	div.container
+		div.row.row-no-top
+			div.content
+				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
+					a(href='#' id='backtodash')
+						.navBtn.back
+							.arrowBlueLeft
+				div.col-xs-6.col-sm-6.col-md-6.col-lg-6
+					div.pageInstruct #{user}
+					div.arrowWhiteDown
+				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
+					a(href='#')#sendreport
+						.navBtn.grid
+							.gridBlue
+				div.col-xs-12.col-sm-12.col-md-12.col-lg-12
+					table(style="width:100%;")
+						thead
+							tr
+								th
+								each answer_field in answers_by_date.questions
+									th #{answer_field}
+						tbody
+							each person,key in answers_by_date
+								if key != 'questions'
+									tr
+										td #{key}
+										each answer in answers_by_date[key]
+											td #{answer}

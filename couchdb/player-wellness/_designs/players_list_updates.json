@@ -4,8 +4,8 @@
    "language": "javascript",
    "updates": {
        "update-players": "function (doc, req) {var body = JSON.parse(req.body); doc.players = body.players; return [doc, toJSON(req)];}",
-       "update-player": "function (doc, req) {var body = JSON.parse(req.body); var id = body.id; var players = doc.players; for(var i = 0; i<players.length; i++){if(players[i].id == id){players[i] = body.player}}; return [doc, toJSON(req)];}"
-   },
+       "update-player": "function (doc, req) {var body = JSON.parse(req.body); var id = body.id; var players = doc.players; for(var i = 0; i<players.length; i++){if(players[i].id == id){players[i] = body.player}}; return [doc, toJSON(req)];}",
+    },
    "views": {
        "get-players": {
            "map": "function(doc) { if(doc._id == 'players_list'){emit(null, doc.players);} }"
