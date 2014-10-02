@@ -14,8 +14,15 @@ var nano = require('nano')('http://pinusi.iriscouch.com:5984');
 var playerdb = null;
 nano.auth(username, password, function(err, response, headers)
     {
-    	nano = require('nano')({url: 'http://pinusi.iriscouch.com:5984', cookie: headers['set-cookie']})
-        playerdb = nano.db.use('player-wellness');
+    	if(!err)
+    	{
+    		nano = require('nano')({url: 'http://pinusi.iriscouch.com:5984', cookie: headers['set-cookie']})
+        	playerdb = nano.db.use('player-wellness');
+        }
+        else
+        {
+        	console.log('non sei connesso al db! o a internet!');
+        }
     });
 // var players_list_doc = undefined;
 // var players_list_rev = 

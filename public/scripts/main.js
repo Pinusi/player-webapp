@@ -262,6 +262,19 @@ WELLNESS.CLIENT.Main.prototype.addFormEvents = function()
 
 	$('.tappop').on('click',function(){
 		$('.popOverlay[popup-data-to=' + $(this).attr('popup-data-from') + ']').show();
+		$( this ).parents('.serverAnsw').attr("data-ispop", true);
+	});
+
+	$('.nopop').on('click',function(){
+		$( this ).parents('.serverAnsw').attr("data-ispop", false);
+	});
+
+	//TBRefactored
+	$(".popOverlay").on('click',function(e){
+		var $box = $('.popUp');
+		var $box_close = $('.closePop');
+	   	if(!$box.is(e.target) && $box.has(e.target).length === 0 || $box_close.is(e.target))
+	      	$( this ).hide();
 	});
 
 	//close modal
@@ -269,6 +282,7 @@ WELLNESS.CLIENT.Main.prototype.addFormEvents = function()
 	   	// var $box = $('.popUp');
 	   	// var $box_close = $('.closePop');
 	   	// if(!$box.is(e.target) && $box.has(e.target).length === 0 && !$box_close.is(e.target))
+	    e.preventDefault();
 	    $('.popOverlay').hide();
 	});
 
@@ -320,12 +334,15 @@ WELLNESS.CLIENT.Main.prototype.addFormEvents = function()
 		    		break;
 		    	case 'tappop':
 	    			if( $(this).attr('data-answer') ){
-	    				//salva popup
 	    				var specific = {};
-	    				$('.popOverlay[popup-data-to=' + $(this).attr('data-id') + ']').find('.popupAnsw').each(function()
+	    				if( $(this).attr('data-ispop') )
 	    				{
-	    					specific[$(this).attr('data-header')] = $(this).attr('data-answer');
-	    				});
+		    				//salva popup
+		    				$('.popOverlay[popup-data-to=' + $(this).attr('data-id') + ']').find('.popupAnsw').each(function()
+		    				{
+		    					specific[$(this).attr('data-header')] = $(this).attr('data-answer');
+		    				});
+		    			}
 			    		answers.push(
 			    		{
 			    			id: $(this).attr('data-id'),

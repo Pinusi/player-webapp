@@ -42,8 +42,9 @@ block content
 											div.minusBlue
 										input.question_topick(name="Answer", value="#{question.txt}", type="text")
 									each option in question.answers
-										a.formBtnCont
-											div.crossWhite
+										div.formBtnCont
+											a.crossWhiteCont
+												div.crossWhite
 											input.options_topick(name="Answer", value="#{option}", type="text")
 											//- p #{option}
 									if question.answers.length < 4

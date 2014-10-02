@@ -43,15 +43,23 @@ block content
 									else
 										div.playerImage(class=player.surname.toLowerCase())
 								div.playerInfo
-									span.playerNo= player.player_number
-									= player.surname
+									if player.role == 'gk'
+										span.playerNo.gk= player.player_number
+										= player.surname
+									else
+										span.playerNo= player.player_number
+										= player.surname
 						else
 							a.player_login(data-user=player.surname.toLowerCase())
 								div.playerCircle
 									div.playerImage(class=player.surname.toLowerCase())
 								div.playerInfo
-									span.playerNo= player.player_number
-									= player.surname
+									if player.role == 'gk'
+										span.playerNo.gk= player.player_number
+										= player.surname
+									else
+										span.playerNo= player.player_number
+										= player.surname
 
 	div.popOverlay(style='display:none;')#playerpop
 		div.popUp.dob

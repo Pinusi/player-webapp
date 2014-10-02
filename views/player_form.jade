@@ -41,7 +41,7 @@ block content
 									div.formInstruct.input
 										p #{question.txt}
 									form
-										input(type='text')
+										input(type='text', placeholder="0")
 							else if question.type === 'tap'
 								div.formQuestion.serverAnsw(data-id=question.id, data-type=question.type)
 									div.formInstruct
@@ -54,10 +54,15 @@ block content
 								div.formQuestion.serverAnsw(data-id=question.id, data-type=question.type)
 									div.formInstruct
 										p #{question.txt}
-									each option in question.answers
-										a.formBtnCont.tappop(popup-data-from=question.id)
-											div.formBtn
-												p #{option}
+									each option, index in question.answers
+										if question.popup.whofires.indexOf(index) != -1
+											a.formBtnCont.tappop(popup-data-from=question.id)
+												div.formBtn
+													p #{option}
+										else
+											a.formBtnCont.nopop
+												div.formBtn
+													p #{option}
 				
 				div.col-xs-3.col-xs-offset-9.col-sm-3.col-sm-offset-9.col-md-3.col-dm-offset-9.col-lg-3.col-lg-offset-9
 					a(href='#')#submitanswers

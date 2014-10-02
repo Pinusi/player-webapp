@@ -1,11 +1,11 @@
 {
    "_id": "questions_list",
-   "_rev": "5-8d7038b8abd426cd7423428a49aab80f",
+   "_rev": "39-22ab5ee1a8aaa84d78b6d580495c7719",
    "questions": {
        "q_1": {
            "txt": "Weight (kg)",
            "type": "txt",
-           "on": true
+           "on": "true"
        },
        "q_2": {
            "txt": "Energy levels",
@@ -17,7 +17,7 @@
                "More tired than normal",
                "Always Tired"
            ],
-           "on": true
+           "on": "true"
        },
        "q_3": {
            "txt": "Sleep quality",
@@ -29,12 +29,84 @@
                "Restless sleep",
                "Insomnia"
            ],
-           "on": true
+           "on": "true"
        },
        "q_4": {
            "txt": "Hours of sleep",
            "type": "txt",
-           "on": true
+           "on": "true"
+       },
+       "q_5": {
+           "txt": "Muscle Soreness",
+           "type": "tappop",
+           "answers": [
+               "Feeling Great",
+               "Feeling Good",
+               "Normal",
+               "Increase In Soreness",
+               "Very Sore"
+           ],
+           "popup": {
+               "title": "WHERE ARE YOU SORE?",
+               "whofires": [3,4],
+               "questions": {
+                   "General": [
+                       "Legs",
+                       "Back",
+                       "Upper Body"
+                   ],
+                   "Glute": [
+                       "Left",
+                       "Both",
+                       "Right"
+                   ],
+                   "Hamstring": [
+                       "Left",
+                       "Both",
+                       "Right"
+                   ],
+                   "Adductor": [
+                       "Left",
+                       "Both",
+                       "Right"
+                   ],
+                   "Quad": [
+                       "Left",
+                       "Both",
+                       "Right"
+                   ],
+                   "Calf": [
+                       "Left",
+                       "Both",
+                       "Right"
+                   ],
+                   "Hip": [
+                       "Left",
+                       "Both",
+                       "Right"
+                   ],
+                   "Knee": [
+                       "Left",
+                       "Both",
+                       "Right"
+                   ],
+                   "Ankle": [
+                       "Left",
+                       "Both",
+                       "Right"
+                   ]
+               }
+           },
+           "on": "true"
+       },
+       "q_6": {
+           "txt": "Illness In Houshold",
+           "type": "tap",
+           "answers": [
+               "Yes",
+               "No"
+           ],
+           "on": "true"
        }
    }
 }

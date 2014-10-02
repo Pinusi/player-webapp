@@ -1,28 +1,67 @@
 {
    "_id": "players_list",
-   "_rev": "89-6542a0f7f76799bfcb304969c2f426c8",
+   "_rev": "115-5363293fcbc4b47f9e258b0a2d732ff7",
    "players": [
        {
            "name": "Andrea",
            "surname": "Trinchero",
            "id": "p_1",
            "player_number": 1,
+           "role": "gk",
            "answers": {
                "q_1": {
                    "2014-09-21": "4",
-                   "2014-09-22": "5"
+                   "2014-09-22": "5",
+                   "2014-09-28": "5",
+                   "2014-09-30": "5",
+                   "2014-10-01": "7"
                },
                "q_2": {
                    "2014-09-21": "Very Fresh",
-                   "2014-09-22": "Fresh"
+                   "2014-09-22": "Fresh",
+                   "2014-09-28": "Very Fresh",
+                   "2014-09-30": "Very Fresh"
                },
                "q_3": {
                    "2014-09-21": "Good",
-                   "2014-09-22": "Difficulty falling asleep"
+                   "2014-09-22": "Difficulty falling asleep",
+                   "2014-09-28": "Good",
+                   "2014-09-30": "Good",
+                   "2014-10-01": "Very restful"
                },
                "q_4": {
                    "2014-09-21": "4",
-                   "2014-09-22": "6"
+                   "2014-09-22": "6",
+                   "2014-09-28": "5",
+                   "2014-09-30": "6",
+                   "2014-10-01": "8"
+               },
+               "q_5": {
+                   "2014-09-28": {
+                       "general": "Feeling Good",
+                       "specific": {
+                           "Glute": "Both"
+                       }
+                   },
+                   "2014-09-30": {
+                       "general": "Feeling Great",
+                       "specific": {
+                           "Glute": "Both"
+                       }
+                   },
+                   "2014-10-01": {
+                       "general": "Feeling Great",
+                       "specific": {
+                           "General": "Back",
+                           "Glute": "Both"
+                       }
+                   }
+               },
+               "q_6": {
+                   "2014-10-01": "9"
+               },
+               "q_7": {
+                   "2014-10-01": "No"
                }
            }
        },
@@ -31,10 +70,12 @@
            "surname": "Allison",
            "id": "p_2",
            "player_number": 2,
+           "role": "pl",
            "answers": {
                "q_1": {
                    "2014-09-10": "yes",
-                   "2014-09-21": "4"
+                   "2014-09-21": "4",
+                   "2014-10-01": "5"
                },
                "q_2": {
                    "2014-09-10": "yes",
@@ -43,10 +84,26 @@
                },
                "q_3": {
                    "2014-09-14": "x",
-                   "2014-09-21": "Difficulty falling asleep"
+                   "2014-09-21": "Difficulty falling asleep",
+                   "2014-10-01": "Difficulty falling asleep"
                },
                "q_4": {
-                   "2014-09-21": "4"
+                   "2014-09-21": "4",
+                   "2014-10-01": "5"
+               },
+               "q_5": {
+                   "2014-10-01": {
+                       "general": "Feeling Good",
+                       "specific": {
+                           "Glute": "Left"
+                       }
+                   }
+               },
+               "q_6": {
+                   "2014-10-01": "5"
+               },
+               "q_7": {
+                   "2014-10-01": "No"
                }
            }
        }
