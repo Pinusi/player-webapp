@@ -18,7 +18,10 @@ block content
 						.navBtn.back
 							.arrowBlueLeft
 				div.col-xs-6.col-sm-6.col-md-6.col-lg-6
-					div.pageInstruct Select player picture
+					if isTrainee
+						div.pageInstruct Operator Dashboard
+					else
+						div.pageInstruct Select player picture
 					div.arrowWhiteDown
 				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
 					if isTrainee
@@ -26,10 +29,11 @@ block content
 						//- 	.gridBtn.right
 						//- 		.gridBlue
 						a(href='#')#changequestions
+							.navBtn.edit
+								.editBlue
+						a(href='#')#generalreport
 							.navBtn.grid
 								.gridBlue
-						a(href='#')#generalreport
-							.navBtn.live ...
 					else
 						a(href='#')
 							div.thfclogo.right

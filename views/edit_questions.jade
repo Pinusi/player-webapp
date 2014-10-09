@@ -74,10 +74,11 @@ block content
 							div.arrowBlueRight
 
 			div.popOverlay( style='display:none;')#questiontype
-					.popUp
-						a.formBtnCont#addTextQuestions
-							div.formBtn
-								p Text
-						a.formBtnCont#addMPQuestions
-							div.formBtn
+					.popUp.qType
+						div.popUpInstruct.qType CHOOSE QUESTION TYPE
+						a.formBtnCont.qType#addTextQuestions
+							div.formBtn.qType
+								p Text Input
+						a.formBtnCont.qType#addMPQuestions
+							div.formBtn.qType
 								p Multiple Choice

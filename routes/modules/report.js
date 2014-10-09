@@ -23,9 +23,9 @@ exports.getAnswersByDate = function(callback, given_date) //callback to execute
 					for (var i = 0; i < player_list.length; i++) 
 					{
 						var player = player_list[i];
-						if(!excel_data[player.surname])
+						if(!excel_data[player.player_number + " - " + player.surname])
 						{
-							excel_data[player.surname] = [];
+							excel_data[player.player_number + " - " + player.surname] = [];
 						}
 
 						var all_answers = player.answers[question];
@@ -41,16 +41,16 @@ exports.getAnswersByDate = function(callback, given_date) //callback to execute
 										specific += spec + ": "+ today_answer.specific[spec] + ", ";
 									}
 									specific += ")";
-									excel_data[player.surname].push(today_answer.general + specific);
+									excel_data[player.player_number + " - " + player.surname].push(today_answer.general + specific);
 								}
 								else
-									excel_data[player.surname].push(today_answer);
+									excel_data[player.player_number + " - " + player.surname].push(today_answer);
 							else
-								excel_data[player.surname].push("");
+								excel_data[player.player_number + " - " + player.surname].push("");
 						}
 						else
 						{
-							excel_data[player.surname].push("");
+							excel_data[player.player_number + " - " + player.surname].push("");
 						}
 					}
 				}

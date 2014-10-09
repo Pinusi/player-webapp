@@ -22,8 +22,8 @@ block content
 					div.arrowWhiteDown
 				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
 					a(href='#')#sendreport
-						.navBtn.grid
-							.gridBlue
+						.navBtn.edit
+							.emailBlue
 				div.col-xs-12.col-sm-12.col-md-12.col-lg-12
 					table(style="width:100%;")
 						thead
@@ -35,6 +35,9 @@ block content
 							each person,key in answers_by_date
 								if key != 'questions'
 									tr
-										td #{key}
+										td.name
+											div.playerInfo 
+												span.playerNo= key.substr(0, key.indexOf("-")-1) 
+												span= key.substr(key.indexOf("-")+1)
 										each answer in answers_by_date[key]
 											td #{answer}
