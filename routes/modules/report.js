@@ -18,57 +18,79 @@ exports.getAnswersByDate = function(callback, given_date) //callback to execute
 			{
 				if(questions_list.questions[question].on === "true")
 				{
-					excel_data.questions.push(questions_list.questions[question].txt);
-					var type = questions_list.questions[question].type;
+					//questions list
+					excel_data.questions.push(
+						{
+							type: questions_list.questions[question].type, 
+							question: questions_list.questions[question].txt
+						}
+					);
+
+					//players answers
+					var qd_type = questions_list.questions[question].type;
 					var qd_answers = questions_list.questions[question].answers;
 					var qd_scale = questions_list.questions[question].scale;
+
+					//loop through players and get answers
 					for (var i = 0; i < player_list.length; i++) 
 					{
 						var player = player_list[i];
-						if(!excel_data[player.player_number + " - " + player.surname + " - " + player.role])
+
+						if(!excel_data[player.id])
 						{
-							excel_data[player.player_number + " - " + player.surname + " - " + player.role] = [];
+							excel_data[player.id] = 
+								{
+									number: player.player_number,
+									name: player.surname,
+									role: player.role,
+									answers: []
+								};
 						}
 
+						//all the answers to this question
 						var all_answers = player.answers[question];
 						if(all_answers)
 						{
 							var today_answer = all_answers[date];
 							if(today_answer)
-								if(type === "tappop")
+							{
+								var pl_answer = {};
+
+								if(qd_type === "tappop")
 								{
 									//get the general
-									var general = today_answer.general;
+									pl_answer["general"] = today_answer.general;
 									//get the scale of it
-									var position_inarray = qd_answers.indexOf(general);
-									var scale = qd_scale[position_inarray];
+									var position_inarray = qd_answers.indexOf(today_answer.general);
+									pl_answer["scale"] = qd_scale[position_inarray];
 									//specific from popup
-									var specific = "(";
+									var specific = {};
 									for(spec in today_answer.specific)
 									{
-										specific += spec + ": "+ today_answer.specific[spec] + ", ";
+										specific[spec] = today_answer.specific[spec];
 									}
-									specific += ")";
-									excel_data[player.player_number + " - " + player.surname + " - " + player.role].push(general + scale + specific);
+									pl_answer["specific"] = specific;
 								}
-								else if(type === "tap")
+								else if(qd_type === "tap")
 								{
 									//get the general
-									var general = today_answer.general;
+									pl_answer["general"] = today_answer;
 									//get the scale of it
-									var position_inarray = qd_answers.indexOf(general);
-									var scale = qd_scale[position_inarray];
-									excel_data[player.player_number + " - " + player.surname + " - " + player.role].push(general + scale);
+									var position_inarray = qd_answers.indexOf(today_answer.general);
+									pl_answer["scale"] = qd_scale[position_inarray];
 								}
 								else
-									excel_data[player.player_number + " - " + player.surname + " - " + player.role].push(today_answer);
-							else
-								excel_data[player.player_number + " - " + player.surname + " - " + player.role].push("");
+									pl_answer["general"] = today_answer;
+								
+								excel_data[player.id].answers.push(pl_answer);
+							}
+							// else
+							// 	excel_data[player.id].push(pl_answers);
 						}
-						else
-						{
-							excel_data[player.player_number + " - " + player.surname + " - " + player.role].push("");
-						}
+						// else
+						// {
+						// 	excel_data[player.player_number + " - " + player.surname + " - " + player.role].push("");
+						// }
 					}
 				}
 			};

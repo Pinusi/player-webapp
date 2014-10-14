@@ -30,14 +30,30 @@ block content
 							tr
 								th
 								each answer_field in answers_by_date.questions
-									th #{answer_field}
+									th #{answer_field.question}
 						tbody
 							each person,key in answers_by_date
 								if key != 'questions'
 									tr
 										td.name
-											div.playerInfo 
-												span.playerNo= key.substr(0, key.indexOf("-")-1) 
-												span= key.substr(key.indexOf("-")+1)
-										each answer in answers_by_date[key]
-											td #{answer}
+											div.playerInfo
+												if person.role == "g_k"
+													span.playerNo.gk= person.number
+												else
+													span.playerNo= person.number
+												span= person.name
+										each answer in person.answers
+											if answer.scale == "1"
+												td 
+													if answer.specific
+														span.neg 
+															| #{answer.general} 
+															| (
+															each spec, key in answer.specific
+																| #{key}:
+																| #{spec},
+															| )
+													else
+														span.neg #{answer.general}
+											else
+												td #{answer.general}

@@ -55,7 +55,7 @@ block content
 									div.formInstruct
 										p #{question.txt}
 									each option, index in question.answers
-										if question.popup.whofires.indexOf(index) != -1
+										if question.popup.whofires.indexOf(index.toString()) != -1
 											a.formBtnCont.tappop(popup-data-from=question.id)
 												div.formBtn
 													p #{option}
