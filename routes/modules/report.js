@@ -19,13 +19,15 @@ exports.getAnswersByDate = function(callback, given_date) //callback to execute
 				if(questions_list.questions[question].on === "true")
 				{
 					excel_data.questions.push(questions_list.questions[question].txt);
-					var type = questions_list.questions[question].type
+					var type = questions_list.questions[question].type;
+					var qd_answers = questions_list.questions[question].answers;
+					var qd_scale = questions_list.questions[question].scale;
 					for (var i = 0; i < player_list.length; i++) 
 					{
 						var player = player_list[i];
-						if(!excel_data[player.player_number + " - " + player.surname])
+						if(!excel_data[player.player_number + " - " + player.surname + " - " + player.role])
 						{
-							excel_data[player.player_number + " - " + player.surname] = [];
+							excel_data[player.player_number + " - " + player.surname + " - " + player.role] = [];
 						}
 
 						var all_answers = player.answers[question];
@@ -35,22 +37,37 @@ exports.getAnswersByDate = function(callback, given_date) //callback to execute
 							if(today_answer)
 								if(type === "tappop")
 								{
+									//get the general
+									var general = today_answer.general;
+									//get the scale of it
+									var position_inarray = qd_answers.indexOf(general);
+									var scale = qd_scale[position_inarray];
+									//specific from popup
 									var specific = "(";
 									for(spec in today_answer.specific)
 									{
 										specific += spec + ": "+ today_answer.specific[spec] + ", ";
 									}
 									specific += ")";
-									excel_data[player.player_number + " - " + player.surname].push(today_answer.general + specific);
+									excel_data[player.player_number + " - " + player.surname + " - " + player.role].push(general + scale + specific);
+								}
+								else if(type === "tap")
+								{
+									//get the general
+									var general = today_answer.general;
+									//get the scale of it
+									var position_inarray = qd_answers.indexOf(general);
+									var scale = qd_scale[position_inarray];
+									excel_data[player.player_number + " - " + player.surname + " - " + player.role].push(general + scale);
 								}
 								else
-									excel_data[player.player_number + " - " + player.surname].push(today_answer);
+									excel_data[player.player_number + " - " + player.surname + " - " + player.role].push(today_answer);
 							else
-								excel_data[player.player_number + " - " + player.surname].push("");
+								excel_data[player.player_number + " - " + player.surname + " - " + player.role].push("");
 						}
 						else
 						{
-							excel_data[player.player_number + " - " + player.surname].push("");
+							excel_data[player.player_number + " - " + player.surname + " - " + player.role].push("");
 						}
 					}
 				}

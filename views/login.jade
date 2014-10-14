@@ -13,12 +13,11 @@ block content
 				div.siteCont
 					p Wellness
 				div.siteCont
-					p.mastheadHide Wellness
 					if error
 						div.popUp.site.incorrect#login-container
 					else
 						div.popUp.site#login-container
-							form( method="post")#login-form
+							div.form#login-form
 								input(type="text", name="user", placeholder="Username")#user
 								input(type="password", name="pass", placeholder="Password")#pass
 								//- button.somebutton

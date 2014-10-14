@@ -13,17 +13,17 @@ block content
 	div.container
 		div.row.row-no-top
 			div.content
-				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
+				div.col-navBtn
 					a(href='#' id='backtohome')
 						.navBtn.back
 							.arrowBlueLeft
-				div.col-xs-6.col-sm-6.col-md-6.col-lg-6
+				div.col-navBtn
 					if isTrainee
 						div.pageInstruct Operator Dashboard
 					else
 						div.pageInstruct Select player picture
 					div.arrowWhiteDown
-				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
+				div.col-navBtn
 					if isTrainee
 						//- a(href='#')#sendreport
 						//- 	.gridBtn.right
@@ -47,7 +47,7 @@ block content
 									else
 										div.playerImage(class=player.surname.toLowerCase())
 								div.playerInfo
-									if player.role == 'gk'
+									if player.role == 'g_k'
 										span.playerNo.gk= player.player_number
 										= player.surname
 									else
@@ -58,7 +58,7 @@ block content
 								div.playerCircle
 									div.playerImage(class=player.surname.toLowerCase())
 								div.playerInfo
-									if player.role == 'gk'
+									if player.role == 'g_k'
 										span.playerNo.gk= player.player_number
 										= player.surname
 									else
@@ -72,7 +72,7 @@ block content
 			div.playerInfo
 				span.playerNo
 			div.popUpInstruct.dob Enter date of birth
-			form
+			div.form
 				input(type="text" name="Day" placeholder="DD" maxlength="2")#playerday
 				input(type="text" name="Month" placeholder="MM" maxlength="2")#playermonth
 				input(type="text" name="Year" placeholder="YY" maxlength="2")#playeryear

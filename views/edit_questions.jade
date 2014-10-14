@@ -32,8 +32,8 @@ block content
 									div.formInstruct.input
 										div.removeFormInstruct.minus
 											div.minusBlue		
-										input.question_topick(name="Answer", value="#{question.txt}", type="text")
-									form
+										input.question_topick(name="Answer", value="#{question.txt}", type="text", placeholder="0")
+									div.form
 										input(type='text')
 							else if question.type === 'tap'
 								div.formQuestion.pickquestions(data-id=key, data-type=question.type)
@@ -41,10 +41,15 @@ block content
 										div.removeFormInstruct.minus
 											div.minusBlue
 										input.question_topick(name="Answer", value="#{question.txt}", type="text")
-									each option in question.answers
+									each option, index in question.answers
 										div.formBtnCont
 											a.crossWhiteCont
 												div.crossWhite
+											a.posOrNegCont
+												if question.scale[index] == 1
+													div.posOrNeg.neg.posneg_topick
+												else
+													div.posOrNeg.posneg_topick
 											input.options_topick(name="Answer", value="#{option}", type="text")
 											//- p #{option}
 									if question.answers.length < 4

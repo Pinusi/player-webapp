@@ -40,7 +40,7 @@ block content
 								div.formQuestion.serverAnsw(data-id=question.id, data-type=question.type)
 									div.formInstruct.input
 										p #{question.txt}
-									form
+									div.form
 										input(type='text', placeholder="0")
 							else if question.type === 'tap'
 								div.formQuestion.serverAnsw(data-id=question.id, data-type=question.type)
@@ -77,7 +77,7 @@ block content
 						.popUpInstruct.muscle #{question.popup.title}
 						.formQuestionCont
 							each parts,muscle in question.popup.questions
-								.formQuestion.muscle.popupAnsw(data-header=muscle)
+								.formQuestion.muscle.popupAnsw(data-header=muscle data-answer="")
 									.formInstruct.muscle
 										p #{muscle}
 									each part in parts
