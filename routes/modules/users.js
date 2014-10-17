@@ -1,13 +1,9 @@
 //db manager
 var db = require('./db');
 
-//get the users list and store it
-// var user_list = undefined;
-// db.getUserList(function(user_list_data){
-// 	user_list = user_list_data;
-// });
-
-//check the login
+/*
+	PLAYER + OPERATOR LOGIN
+ */
 exports.login = function(user, pass, callback)
 {
 	db.getUserList(function(user_list)

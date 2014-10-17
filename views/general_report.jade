@@ -48,11 +48,13 @@ block content
 													if answer.specific
 														span.neg 
 															| #{answer.general} 
-															| (
 															each spec, key in answer.specific
-																| #{key}:
-																| #{spec},
-															| )
+																div #{key}:
+																	each spec_in_spec, index in spec
+																		if index != spec.length-1
+																			|  #{spec_in_spec},
+																		else
+																			|  #{spec_in_spec}
 													else
 														span.neg #{answer.general}
 											else

@@ -274,8 +274,95 @@ WELLNESS.CLIENT.Main.prototype.playerLogin = function()
     }); 
 }
 
+/*
+	PAGE: player_form.jade
+	SAVE ANSWERS
+ */
+WELLNESS.CLIENT.Main.prototype.saveAnswers = function()
+{	
+	/*
+		form_answers = {
+			"q_id": "answer",
+			"q_id_tappop": {
+				"general": "answer",
+				"specific": {
+					"Name": ["uno", "due"], ...
+				}, ...
+			}
+		}
+	 */
+	var form_answers = {};
+
+    //il form e' completo?
+    var form_completo = true;
+	    
+    $('.serverAnsw').each(function()
+    {
+    	switch($(this).attr('data-type'))
+    	{
+    		//se e' testo semplice salva il valore e l'id
+    		case 'txt':
+    			form_answers[$(this).attr('data-id')] = $(this).find('input').val();
+    			if( !form_answers[$(this).attr('data-id')] && !(form_answers[$(this).attr('data-id')] != 0) ){
+    				form_completo = false;
+		    	}
+	    		break;
+	    	//se e' tap salva il data-answer e l'id
+    		case 'tap':
+    			form_answers[$(this).attr('data-id')] = $( this ).find('.formBtn.selected p').html();
+    			if( !form_answers[$(this).attr('data-id')] ){
+    				form_completo = false;
+		    	}
+	    		break;
+	    	case 'tappop':
+	    		var form_specific = {};
+	    		if($(this).attr('data-ispop'))
+	    		{
+		    		//salva popup
+					$('.popOverlay[popup-data-to=' + $(this).attr('data-id') + ']').find('.popupAnsw').each(function()
+					{
+						if($(this).find('.formBtn.selected p').length != 0)
+						{
+							var data_header = $(this).attr('data-header');
+							form_specific[data_header] = [];
+							$(this).find('.formBtn.selected p').each(function(){
+								form_specific[data_header].push($(this).html());
+							});
+						}
+					});
+				}
+	    		form_answers[$(this).attr('data-id')] = {
+	    			"general": $( this ).find('.formBtn.selected p').html(),
+	    			"specific": form_specific 
+	    		}
+    			if(!form_answers[$(this).attr('data-id')].general &&  !(form_answers[$(this).attr('data-id')].general == "")){
+    				form_completo = false;
+		    	}
+	    		break;
+	    }
+	});
+	
+	return [form_completo,form_answers];
+}
+
 WELLNESS.CLIENT.Main.prototype.addFormEvents = function()
 {
+	/*
+		this.form_answers = {
+			"q_id": "answer",
+			"q_id_tappop": {
+				"general": "answer",
+				"specific": {
+					"Name": ["uno", "due"], ...
+				}, ...
+			}
+		}
+	 */
+	// this.form_answers = {};
+
+	// this.form_answered = 0;
+	var that = this;
+
 	//back button
 	$('#backtodash').on('click',function(){
 		var protocol = window.location.protocol != '' ? window.location.protocol + "//" : '';
@@ -289,33 +376,11 @@ WELLNESS.CLIENT.Main.prototype.addFormEvents = function()
 		$( this ).siblings().find('.formBtn').removeClass('selected');
 		//aggiugngi la classe selected
 		$( this ).find('.formBtn').addClass('selected');
-		//salva in data-answer
-		$( this ).parents('.serverAnsw').attr("data-answer",$( this ).find('p').html());
 	});
 
 	//click on each tap button
 	$('.popupAnsw .formBtnCont').on('click',function(){
-		//togli gli altri della stessa domanda
-		// $( this ).siblings().find('.formBtn').removeClass('selected');
-		// //aggiugngi la classe selected
-		// $( this ).find('.formBtn').addClass('selected');
-		// //salva in data-answer
-		// $( this ).parents('.popupAnsw').attr("data-answer",$( this ).find('p').html());
-		if($( this ).find('.formBtn').hasClass("selected"))
-		{
-			$( this ).find('.formBtn').removeClass('selected');
-			var data_answer_temp = $( this ).parents('.popupAnsw').attr("data-answer");
-			data_answer_temp = data_answer_temp.replace($( this ).find('p').html() + " - ", "");
-			$( this ).parents('.popupAnsw').attr("data-answer", data_answer_temp);
-		}
-		else
-		{
-			$( this ).find('.formBtn').addClass('selected');
-			var data_answer_temp_add = $( this ).parents('.popupAnsw').attr("data-answer");
-			data_answer_temp_add += $( this ).find('p').html() + " - ";
-			$( this ).parents('.popupAnsw').attr("data-answer", data_answer_temp_add);
-			// $( this ).parents('.popupAnsw').attr("data-answer",$( this ).find('p').html() + " - ");
-		}
+		$( this ).find('.formBtn').toggleClass('selected');
 	});
 
 	$('.tappop').on('click',function(){
@@ -349,82 +414,13 @@ WELLNESS.CLIENT.Main.prototype.addFormEvents = function()
 		$('#enotcomplete').hide();
 	});
 
-	$('#submitanswers').click(function() { 
-
-		//array risposte
-	    var answers = [];
-	    //il form e' completo?
-	    var form_completo = true;
-	    
-	    $('.serverAnsw').each(function()
-	    {
-	    	switch($(this).attr('data-type'))
-	    	{
-	    		//se e' testo semplice salva il valore e l'id
-	    		case 'txt':
-	    			if( $(this).find('input').val() ){
-			    		answers.push(
-			    		{
-			    			id: $(this).attr('data-id'),
-			    			txt: $(this).find('input').val()
-			    		});
-			    	}
-		    		else
-		    		{
-		    			form_completo = false;
-		    			//errore
-		    		}
-		    		break;
-		    	//se e' tap salva il data-answer e l'id
-	    		case 'tap':
-	    			if( $(this).attr('data-answer') ){
-			    		answers.push(
-			    		{
-			    			id: $(this).attr('data-id'),
-			    			txt: $(this).attr('data-answer')
-			    		});
-			    	}
-		    		else
-		    		{
-		    			form_completo = false;
-		    			//errore
-		    		}
-		    		break;
-		    	case 'tappop':
-	    			if( $(this).attr('data-answer') ){
-	    				var specific = {};
-	    				if( $(this).attr('data-ispop') )
-	    				{
-		    				//salva popup
-		    				$('.popOverlay[popup-data-to=' + $(this).attr('data-id') + ']').find('.popupAnsw').each(function()
-		    				{
-		    					if($(this).attr('data-answer') && $(this).attr('data-answer') != "")
-		    					{
-		    						specific[$(this).attr('data-header')] = $(this).attr('data-answer');
-		    					}
-		    				});
-		    			}
-			    		answers.push(
-			    		{
-			    			id: $(this).attr('data-id'),
-			    			txt: {
-			    					general: $(this).attr('data-answer'),
-			    					specific: specific
-			    				}
-			    		});
-			    	}
-		    		else
-		    		{
-		    			form_completo = false;
-		    			//errore
-		    		}
-		    		break;
-		    }
-
-    	});
+	$('#submitanswers').click(function() {
+		var answers_saved = that.saveAnswers();
+		var is_complete = answers_saved[0];
+		var answers = answers_saved[1];
 
 	    //se non manca nulla chiama
-	    if(form_completo)
+	    if(is_complete)
 	    {
 		    $.ajax({
 		        url: '/playerform',
@@ -504,6 +500,7 @@ WELLNESS.CLIENT.Main.prototype.addEditEvents = function()
 	$('.pickquestions .removeFormInstruct.addAnswer').on('click',function(){
 		new_button = '	<div class="formBtnCont">';
 		new_button += '		<a class="crossWhiteCont"><div class="crossWhite"></div></a>';
+		new_button += '		<a class="posOrNegCont"><div class="posOrNeg posneg_topick"></div></a>';
 		new_button += '		<input class="options_topick" name="Answer" value="Option" type="text"/>';
 		new_button += '	</div>';
 		$( this ).parents('.formBtnCont').before(new_button);
@@ -514,6 +511,9 @@ WELLNESS.CLIENT.Main.prototype.addEditEvents = function()
 		{
 			$( this ).parents('.formBtnCont').remove();
 		}
+		$( this ).parents('.formBtnCont').prev().find(".posOrNegCont").on("click", function(){
+			$(this).find(".posOrNeg").toggleClass("neg");
+		});
 	});
 
 	//text
@@ -566,10 +566,12 @@ WELLNESS.CLIENT.Main.prototype.addEditEvents = function()
 		new_question += '	</div>';
 		new_question += '	<div class="formBtnCont">';
 		new_question += '		<a class="crossWhiteCont"><div class="crossWhite"></div></a>';
+		new_question += '		<a class="posOrNegCont"><div class="posOrNeg posneg_topick"></div></a>';
 		new_question += '		<input class="options_topick" name="Answer" value="Yes" type="text"/>';
 		new_question += '	</div>';
 		new_question += '	<div class="formBtnCont">';
 		new_question += '		<a class="crossWhiteCont"><div class="crossWhite"></div></a>';
+		new_question += '		<a class="posOrNegCont"><div class="posOrNeg posneg_topick"></div></a>';
 		new_question += '		<input class="options_topick" name="Answer" value="No" type="text"/>';
 		new_question += '	</div>';
 		new_question += '	<a class="formBtnCont">';
@@ -597,6 +599,7 @@ WELLNESS.CLIENT.Main.prototype.addEditEvents = function()
 		$('.pickquestions[data-id="q_'+that.q_last+'"]').find('.removeFormInstruct.addAnswer').on('click',function(){
 			new_button = '	<div class="formBtnCont">';
 			new_button += '		<a class="crossWhiteCont"><div class="crossWhite"></div></a>';
+			new_button += '		<a class="posOrNegCont"><div class="posOrNeg posneg_topick"></div></a>';
 			new_button += '		<input class="options_topick" name="Answer" value="Option" type="text"/>';
 			new_button += '	</div>';
 			$( this ).parents('.formBtnCont').before(new_button);
@@ -608,6 +611,10 @@ WELLNESS.CLIENT.Main.prototype.addEditEvents = function()
 
 		$('.pickquestions[data-id="q_'+that.q_last+'"]').find('.crossWhite').on('click',function(){
 			$( this ).parents('.formBtnCont').remove();
+		});
+
+		$('.pickquestions[data-id="q_'+that.q_last+'"]').find('.posOrNegCont').on("click", function(){
+			$(this).find(".posOrNeg").toggleClass("neg");
 		});
 	});
 
@@ -782,11 +789,23 @@ WELLNESS.CLIENT.Main.prototype.addReportEvents = function()
 	        					table += '<td>';
 	        						if(answer[d].specific)
 	        						{
-	        							table += '<span class="neg">' + answer[d].general + "(";
+	        							table += '<span class="neg">' + answer[d].general;
 	        							for (var key in answer[d].specific) {
-	        								table += key + ": " + answer[d].specific[key] + ",";
+	        								table += '<div>' + key + ":";
+	        								var specific_list = answer[d].specific[key];
+	        								for (var o = 0; o < specific_list.length; o++) {
+	        									if(o < specific_list.length-1)
+	        									{
+	        										table += " " + specific_list[o] + ",";
+	        									}
+	        									else
+	        									{
+	        										table += " " + specific_list[o];
+	        									}
+	        								};
+	        								table += '</div>'
 	        							};
-	        							table += ')</span>';
+	        							table += '</span>';
 	        						}
 	        						else
 	        						{

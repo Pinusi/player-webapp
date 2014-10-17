@@ -1,11 +1,6 @@
 extends layout
 
 block content
-	//- #players
-	//- 	each question in questions
-	//- 		label #{question.txt} 
-	//- 		input(type="text", name=question.id id=question.id).answers
-	//- 	button.sendanswers
 	script.
 		$(document).ready(function() {
 			if(!window.wellnessMain)
@@ -33,17 +28,17 @@ block content
 				div.col-xs-3.col-sm-3.col-md-3.col-lg-3
 					a(href='#')
 						div.thfclogo.right
-				each question in questions
+				each question,key in questions
 					if question.on == "true"
 						div.col-xs-12.col-sm-12.col-md-12.col-lg-12
 							if question.type === 'txt'
-								div.formQuestion.serverAnsw(data-id=question.id, data-type=question.type)
+								div.formQuestion.serverAnsw(data-id=key, data-type=question.type)
 									div.formInstruct.input
 										p #{question.txt}
 									div.form
 										input(type='text', placeholder="0")
 							else if question.type === 'tap'
-								div.formQuestion.serverAnsw(data-id=question.id, data-type=question.type)
+								div.formQuestion.serverAnsw(data-id=key, data-type=question.type)
 									div.formInstruct
 										p #{question.txt}
 									each option in question.answers
@@ -51,12 +46,12 @@ block content
 											div.formBtn
 												p #{option}
 							else if question.type === 'tappop'
-								div.formQuestion.serverAnsw(data-id=question.id, data-type=question.type)
+								div.formQuestion.serverAnsw(data-id=key, data-type=question.type)
 									div.formInstruct
 										p #{question.txt}
 									each option, index in question.answers
 										if question.popup.whofires.indexOf(index.toString()) != -1
-											a.formBtnCont.tappop(popup-data-from=question.id)
+											a.formBtnCont.tappop(popup-data-from=key)
 												div.formBtn
 													p #{option}
 										else
@@ -69,10 +64,10 @@ block content
 						div.submitBtn.right
 							div.arrowBlueRight
 
-	each question in questions
+	each question,key in questions
 		if question.on == "true"
 			if question.type === 'tappop'
-				div.popOverlay(popup-data-to=question.id, style='display:none;')
+				div.popOverlay(popup-data-to=key, style='display:none;')
 					.popUp.muscle
 						.popUpInstruct.muscle #{question.popup.title}
 						.formQuestionCont

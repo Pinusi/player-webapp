@@ -112,21 +112,6 @@ exports.getPLayerDocument = function(callback)
 	});
 }
 
-exports.getOnePLayer = function(player_id, callback)
-{
-	console.log(player_id);
-	playerdb.view("players_list_updates", "get-playerbyid", { key: [player_id]}, function(err,body) {
-		if (!err) {
-			var player = body.rows[0].value;
-			callback(player);
-		}
-		else
-		{
-			console.log('error in getOnePLayer');
-		}
-	});
-}
-
 exports.savePlayerDocument = function(players_update, callback)
 {
 	// console.log(players_update);
@@ -150,6 +135,21 @@ exports.savePlayerDocument = function(players_update, callback)
   			}
   		}
   	);
+}
+
+exports.getOnePLayer = function(player_id, callback)
+{
+	console.log(player_id);
+	playerdb.view("players_list_updates", "get-playerbyid", { key: [player_id]}, function(err,body) {
+		if (!err) {
+			var player = body.rows[0].value;
+			callback(player);
+		}
+		else
+		{
+			console.log('error in getOnePLayer');
+		}
+	});
 }
 
 exports.saveOnePlayer = function(player_update, player_id, callback)

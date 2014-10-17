@@ -2,42 +2,65 @@
 var db = require('./db');
 var moment = require('moment');
 
-//get the question list and store it
-// var question_list = undefined;
-// db.getQuestionsList(function(question_list_data){
-// 	question_list = question_list_data;
-// });
-
 /*
 	GET THE QUESTIONS FORT THE playerform
+	@QUESTIONS:
+	{
+       "q_1": {
+           "txt": "",
+           "type": "txt",
+           "on": "true"
+       },
+       "q_2": {
+           "txt": "",
+           "type": "tap",
+           "answers": [
+               "Very Fresh",
+               "Fresh", ...
+           ],
+           "on": "true",
+           "scale": [
+               0,
+               0, ...
+           ]
+       },
+       "q_5": {
+           "txt": "",
+           "type": "tappop",
+           "answers": [
+               "Feeling Great", ...
+           ],
+           "scale": [
+               0, ...
+           ],
+           "popup": {
+               "title": "WHERE ARE YOU SORE?",
+               "whofires": [
+                   3,
+                   4
+               ],
+               "questions": {
+                   "General": [
+                       "Legs", ...
+                   ], ...
+               }
+           },
+           "on": "true"
+       }, ...
+    }
+
  */
 exports.getQuestionsTxt = function(callback) //callback to execute
 {
 	db.getQuestionsList(function(question_list){
-		//array of questions
-		var questions_array = [];
-		for (var questionid in question_list.questions) 
-		{
-		  	if(question_list.questions[questionid].on){
-			  	questions_array.push(
-				  	{	
-				  		txt: question_list.questions[questionid].txt,
-				  		id: questionid,
-				  		type: question_list.questions[questionid].type,
-				  		on: question_list.questions[questionid].on,
-				  		answers: question_list.questions[questionid].answers,
-				  		popup: question_list.questions[questionid].popup
-				  	});
-			}
-		}
-		callback(questions_array);
+		callback(question_list.questions);
 	});
 }
 
 /*
 	SAVE THE ANSWERS AFTER SUBMITTING
  */
-exports.saveAnswers = function(answers, id, callback) //answers to store, playerid
+exports.saveAnswers = function(questions, id, callback) //answers to store, playerid
 {
 	//save playerid
 	var playerID = id;
@@ -51,23 +74,37 @@ exports.saveAnswers = function(answers, id, callback) //answers to store, player
 		for(var j = 0; j < players.length; j++) {
 	   		var player = players[j];
 	   		if( player.id === playerID ) {
-	   			for (var i = 0; i < answers.length; i++) 
-				{
-		   			var answer_to_save = answers[i].txt;
-		   			var questionID = answers[i].id;
+	   // 			for (var i = 0; i < answers.length; i++) 
+				// {
+		  //  			var answer_to_save = answers[i].txt;
+		  //  			var questionID = answers[i].id;
 
-		   			var answer = player.answers[questionID];
+		   			// var answer = player.answers[questionID];
+		   			// if( answer )
+		   			// {
+		   			// 	answer[date] = questions[question_id];
+		   			// }
+		   			// else
+		   			// {
+		   			// 	player.answers[questionID] = {};
+		   			// 	answer = player.answers[questionID];
+		   			// 	answer[date] = questions[question_id];
+		   			// }
+		   		// }
+		  		for(var question_id in questions)
+		  		{
+		  			var answer = player.answers[question_id];
 		   			if( answer )
 		   			{
-		   				answer[date] = answer_to_save;
+		   				answer[date] = questions[question_id];
 		   			}
 		   			else
 		   			{
-		   				player.answers[questionID] = {};
-		   				answer = player.answers[questionID];
-		   				answer[date] = answer_to_save;
+		   				player.answers[question_id] = {};
+		   				answer = player.answers[question_id];
+		   				answer[date] = questions[question_id];
 		   			}
-		   		}
+		  		}
 	   		}
 
 	   		//check if everybody is done
