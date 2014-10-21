@@ -37,7 +37,7 @@ var moment = require('moment');
  */
 exports.getWhoAnswered = function(callback) //callback to execute
 {
-	var date = moment().format('YYYY-MM-DD');
+	var date = moment().utc().format('YYYY-MM-DD');
 	var whoAnswered = {};
 
 	db.getPLayerDocument(function(player_list){

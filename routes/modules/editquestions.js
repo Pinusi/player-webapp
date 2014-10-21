@@ -1,6 +1,9 @@
 //db manager
 var db = require('./db');
 
+/*
+
+ */
 exports.getAllQuestions = function(callback) //callback to execute
 {
 	db.getQuestionsList(function(question_list){

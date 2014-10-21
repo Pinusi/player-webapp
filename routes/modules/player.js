@@ -65,7 +65,7 @@ exports.saveAnswers = function(questions, id, callback) //answers to store, play
 	//save playerid
 	var playerID = id;
 	//today
-	var date = moment().format('YYYY-MM-DD');
+	var date = moment().utc().format('YYYY-MM-DD');
 	//everybody done
 	var isEverybodyDone = true;
 
@@ -74,23 +74,6 @@ exports.saveAnswers = function(questions, id, callback) //answers to store, play
 		for(var j = 0; j < players.length; j++) {
 	   		var player = players[j];
 	   		if( player.id === playerID ) {
-	   // 			for (var i = 0; i < answers.length; i++) 
-				// {
-		  //  			var answer_to_save = answers[i].txt;
-		  //  			var questionID = answers[i].id;
-
-		   			// var answer = player.answers[questionID];
-		   			// if( answer )
-		   			// {
-		   			// 	answer[date] = questions[question_id];
-		   			// }
-		   			// else
-		   			// {
-		   			// 	player.answers[questionID] = {};
-		   			// 	answer = player.answers[questionID];
-		   			// 	answer[date] = questions[question_id];
-		   			// }
-		   		// }
 		  		for(var question_id in questions)
 		  		{
 		  			var answer = player.answers[question_id];
@@ -111,8 +94,6 @@ exports.saveAnswers = function(questions, id, callback) //answers to store, play
 	   		var isHeDone = false;
 	   		for(check_answ in player.answers)
 			{
-				// console.log(check_answ);
-				// console.log(date);
 				var answ_obj = player.answers[check_answ];
 				if(answ_obj[date])
 				{

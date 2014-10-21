@@ -44,18 +44,17 @@ block content
 												span= person.name
 										each answer in person.answers
 											if answer.scale == "1"
-												td 
+												td.neg 
 													if answer.specific
-														span.neg 
-															| #{answer.general} 
-															each spec, key in answer.specific
-																div #{key}:
-																	each spec_in_spec, index in spec
-																		if index != spec.length-1
-																			|  #{spec_in_spec},
-																		else
-																			|  #{spec_in_spec}
+														| #{answer.general} 
+														each spec, key in answer.specific
+															div #{key}:
+																each spec_in_spec, index in spec
+																	if index != spec.length-1
+																		|  #{spec_in_spec},
+																	else
+																		|  #{spec_in_spec}
 													else
-														span.neg #{answer.general}
+														| #{answer.general}
 											else
 												td #{answer.general}

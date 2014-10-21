@@ -315,7 +315,6 @@ module.exports = function(app) {
 	app.post('/editquestions', function(req, res) {
 		//get all the questions from client
 		var questions = req.body.questions;
-		console.log(questions);
 		ED.saveQuestionsUpdate(questions,function(result){
 			var response = {
 		  		result: result,

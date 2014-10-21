@@ -1,14 +1,14 @@
 //db manager that handles calls to db
 var username = 'tottenham.reader';
-// var password = 'tottenham2014';
-var password = 'entra';
+var password = 'tottenham2014';
+// var password = 'entra';
 
 //LOCAL DB
 // var nano = require('nano')('http://localhost:5984');
 //IRIS COUCH 
-var nano = require('nano')('http://pinusi.iriscouch.com:5984');
+// var nano = require('nano')('http://pinusi.iriscouch.com:5984');
 // var nano = require('nano')('http://pinusi.iriscouch.com');
-// var nano = require('nano')('http://pwtottenham.iriscouch.com:5984');
+var nano = require('nano')('http://pwtottenham.iriscouch.com:5984');
 // var nano = require('nano')('http://pwtottenham.iriscouch.com');
 
 var playerdb = null;
@@ -16,7 +16,7 @@ nano.auth(username, password, function(err, response, headers)
     {
     	if(!err)
     	{
-    		nano = require('nano')({url: 'http://pinusi.iriscouch.com:5984', cookie: headers['set-cookie']})
+    		nano = require('nano')({url: 'http://pwtottenham.iriscouch.com:5984', cookie: headers['set-cookie']})
         	playerdb = nano.db.use('player-wellness');
         }
         else
@@ -24,8 +24,6 @@ nano.auth(username, password, function(err, response, headers)
         	console.log('non sei connesso al db! o a internet!');
         }
     });
-// var players_list_doc = undefined;
-// var players_list_rev = 
 
 exports.getUserList = function(callback)
 {
